@@ -1,0 +1,13 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  day_week: 2026-09-05
+  start_time: 2026-09-05 10:34:18
+  end_time: 2026-09-05 10:34:18
+  court: one
+
+two:
+  day_week: 2026-09-05
+  start_time: 2026-09-05 10:34:18
+  end_time: 2026-09-05 10:34:18
+  court: two

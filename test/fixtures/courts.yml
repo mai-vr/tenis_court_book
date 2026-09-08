@@ -1,0 +1,17 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  material: MyString
+  status: 1
+  indoor: false
+  description: MyText
+  price_per_hour: 9.99
+  club: one
+
+two:
+  material: MyString
+  status: 1
+  indoor: false
+  description: MyText
+  price_per_hour: 9.99
+  club: two

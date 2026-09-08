@@ -1,0 +1,40 @@
+<section>
+    <h1>
+        Selected court
+    </h1>
+
+    # <% if policy(Court).new? %>
+    #     <div>
+    #         <%= link_to "New court", new_court_path %>
+    #     </div>
+    # <%end%>
+
+    <div>
+        
+            <% if policy(@court).edit? %>
+                <%= link_to "Edit", edit_court_path(@court) %>
+            <% end %>
+            <% if policy(@court).destroy? %>
+                <%= button_to "Delete", court_path(@court), method: :delete %>
+            <% end %>
+            <div>
+                <h4>
+                    <%= @court.club.name %>
+                </h4>
+                <p>
+                    <%= @court.material %>
+                </p>
+                <p>
+                    <% if @court.indoor %>
+                        <p>Indoor</p>
+                    <%else%>
+                        <p>Outdoor</p>
+                    <%end%>
+                </p>
+                <p>
+                    $ <%= @court.price_per_hour %> per hour
+                </p>
+            </div>
+        
+    </div>
+</section>
