@@ -10,11 +10,14 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_09_08_181122) do
+ActiveRecord::Schema[8.1].define(version: 2026_09_14_094033) do
   create_table "clubs", force: :cascade do |t|
     t.datetime "created_at", null: false
+    t.string "description"
+    t.string "email"
     t.integer "location_id", null: false
     t.string "name"
+    t.string "phone"
     t.datetime "updated_at", null: false
     t.index ["location_id"], name: "index_clubs_on_location_id"
   end
