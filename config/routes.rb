@@ -13,8 +13,11 @@ Rails.application.routes.draw do
 
   # Defines the root path route ("/")
   # root "posts#index"
+  resources :clubs do
+    resources :schedules, only: %i[new create]
+  end
   resources :courts
-  root "courts#index"
+  root "clubs#index"
   # resource :users, only: %i[new create], controller: "user_registrations"
   get "signup", to: "user_registrations#new", as: :new_user
   post "signup", to: "user_registrations#create", as: :users

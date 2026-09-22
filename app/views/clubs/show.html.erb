@@ -1,0 +1,26 @@
+<section>
+  <h1><%= @club.name %></h1>
+  <p><%= @club.description %></p>
+  <p><%= @club.location.street %> <%= @club.location.number %>, <%= @club.location.city %></p>
+  <p><%= @club.phone %> <% if @club.email.present? %>· <%= @club.email %><% end %></p>
+
+  <h2>Horarios</h2>
+  <% if policy(Schedule).new? %>
+    <%= link_to "Agregar horarios", new_club_schedule_path(@club) %>
+  <% end %>
+
+  <% if @schedules.any? %>
+    <ul>
+      <% @schedules.each do |schedule| %>
+        <li><%= schedule.day_week.humanize %>: <%= schedule.start_time.strftime("%H:%M") %> - <%= schedule.end_time.strftime("%H:%M") %></li>
+      <% end %>
+    </ul>
+  <% else %>
+    <p>No hay horarios cargados.</p>
+  <% end %>
+
+  <% if policy(@club).edit? %>
+    <%= link_to "Editar club", edit_club_path(@club) %>
+  <% end %>
+  <%= link_to "Volver a clubs", clubs_path %>
+</section>

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_09_14_094033) do
+ActiveRecord::Schema[8.1].define(version: 2026_09_22_175202) do
   create_table "clubs", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.string "description"
@@ -66,13 +66,13 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_14_094033) do
   end
 
   create_table "schedules", force: :cascade do |t|
-    t.integer "court_id", null: false
+    t.integer "club_id", null: false
     t.datetime "created_at", null: false
     t.integer "day_week", null: false
     t.time "end_time"
     t.time "start_time"
     t.datetime "updated_at", null: false
-    t.index ["court_id"], name: "index_schedules_on_court_id"
+    t.index ["club_id"], name: "index_schedules_on_club_id"
   end
 
   create_table "sessions", force: :cascade do |t|
@@ -100,6 +100,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_14_094033) do
   add_foreign_key "reservations", "courts"
   add_foreign_key "reservations", "payments"
   add_foreign_key "reservations", "users"
-  add_foreign_key "schedules", "courts"
+  add_foreign_key "schedules", "clubs"
   add_foreign_key "sessions", "users"
 end
