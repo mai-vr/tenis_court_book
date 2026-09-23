@@ -68,41 +68,44 @@ class ClubsController < ApplicationController
   end
 
   def build_booking_slots
-    @schedules.flat_map do |schedule|
-      date = next_occurrence(schedule.day_week_before_type_cast, schedule.end_time)
-      current_time = schedule.start_time
-      slots = []
+  @schedules.flat_map do |schedule|
+    date = next_occurrence(schedule.day_week_before_type_cast, schedule.end_time)
+    current_time = schedule.start_time
+    slots = []
 
-      while current_time < schedule.end_time
-        end_time = current_time + 1.hour
-        break if end_time > schedule.end_time
+    while current_time < schedule.end_time
+      end_time = current_time + 1.hour
+      break if end_time > schedule.end_time
 
-        if date == Date.current && end_time.seconds_since_midnight <= Time.current.seconds_since_midnight
-          current_time = end_time
-          next
-        end
-
-        @club.courts.available.each do |court|
-          slots << {
-            court: court,
-            date: date,
-            start_time: current_time,
-            end_time: end_time,
-            available: !Reservation.exists?(
-              court: court,
-              current_date: date,
-              start_time: current_time,
-              end_time: end_time
-            )
-          }
-        end
-
+      if date == Date.current && end_time.seconds_since_midnight <= Time.current.seconds_since_midnight
         current_time = end_time
+        next
       end
 
-      slots
+      # Buscamos qué canchas están libres en este bloque específico
+      available_courts = @club.courts.available.reject do |court|
+        Reservation.exists?(
+          court: court,
+          current_date: date,
+          start_time: current_time,
+          end_time: end_time
+        )
+      end
+
+      slots << {
+        date: date,
+        start_time: current_time,
+        end_time: end_time,
+        available_courts: available_courts, # Lista de canchas libres
+        available: available_courts.any?    # Disponible si hay al menos una cancha libre
+      }
+
+      current_time = end_time
     end
+
+    slots
   end
+end
 
   def next_occurrence(day_of_week, closing_time)
     date = Date.current + ((day_of_week.to_i - Date.current.wday) % 7)

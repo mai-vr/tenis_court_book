@@ -1,28 +1,19 @@
-<section>
-  <h1>Detalles de la reserva</h1>
-  <p><strong>Club:</strong> <%= @club.name %></p>
-  <p><strong>Cancha:</strong> <%= @court.description %></p>
+<h1>Reservar en <%= @club.name %></h1>
+
+<%= form_with(model: [@club, @reservation]) do |f| %>
+  <%= f.hidden_field :current_date %>
+  <%= f.hidden_field :start_time %>
+  <%= f.hidden_field :end_time %>
+
   <p><strong>Fecha:</strong> <%= l(@reservation.current_date, format: :long) %></p>
   <p><strong>Horario:</strong> <%= @reservation.start_time.strftime("%H:%M") %> - <%= @reservation.end_time.strftime("%H:%M") %></p>
-  <p><strong>Precio:</strong> <%= number_to_currency(@court.price_per_hour) %></p>
 
-  <% if @reservation.errors.any? %>
-    <div>
-      <h2>No se puede reservar este horario</h2>
-      <ul>
-        <% @reservation.errors.full_messages.each do |message| %>
-          <li><%= message %></li>
-        <% end %>
-      </ul>
-    </div>
-  <% end %>
+  <div class="field">
+    <%= f.label :court_id, "Seleccionar Cancha Libre" %>
+    <%= f.collection_select :court_id, @available_courts, :id, :description, prompt: "Elige una cancha" %>
+  </div>
 
-  <%= form_with model: [@club, @reservation] do |form| %>
-    <%= form.hidden_field :current_date %>
-    <%= form.hidden_field :start_time %>
-    <%= form.hidden_field :end_time %>
-    <%= form.submit "Confirmar reserva" %>
-  <% end %>
-
-  <%= link_to "Volver al club", club_path(@club) %>
-</section>
+  <div class="actions">
+    <%= f.submit "Confirmar Reserva" %>
+  </div>
+<% end %>

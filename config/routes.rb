@@ -18,9 +18,9 @@ Rails.application.routes.draw do
     resources :reservations, only: %i[new create]
     resources :courts
   end
-  resources :courts
-  root "clubs#index"
+  
   # resource :users, only: %i[new create], controller: "user_registrations"
   get "signup", to: "user_registrations#new", as: :new_user
   post "signup", to: "user_registrations#create", as: :users
+  root "clubs#index"
 end

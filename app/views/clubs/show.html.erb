@@ -60,21 +60,20 @@
           <ul>
             <% slots.each do |slot| %>
               <li>
-                <strong><%= slot[:court].description %></strong>: 
                 <%= slot[:start_time].strftime("%H:%M") %> - <%= slot[:end_time].strftime("%H:%M") %>
                 
                 <% if slot[:available] %>
                   <%= link_to "Reservar", new_club_reservation_path(
                     @club,
-                    court_id: slot[:court].id,
                     reservation: {
                       current_date: slot[:date],
                       start_time: slot[:start_time].strftime("%H:%M"),
                       end_time: slot[:end_time].strftime("%H:%M")
                     }
                   ) %>
+                  <small>(Canchas disponibles: <%= slot[:available_courts].count %>)</small>
                 <% else %>
-                  <span>Reservado</span>
+                  <span>No disponible</span>
                 <% end %>
               </li>
             <% end %>
@@ -85,11 +84,4 @@
   <% else %>
     <p>No hay bloques disponibles para reservar.</p>
   <% end %>
-
-  <div style="margin-top: 20px;">
-    <% if policy(@club).edit? %>
-      <%= link_to "Editar club", edit_club_path(@club) %> |
-    <% end %>
-    <%= link_to "Volver a clubs", clubs_path %>
-  </div>
 </section>
