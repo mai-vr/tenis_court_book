@@ -11,8 +11,27 @@ class Reservation < ApplicationRecord
   validate :one_hour_slot
   validate :overlapping_reservations
   validate :club_schedule
+  validate :court_must_be_available
+  validate :court_must_be_available
 
   private 
+
+  def court_must_be_available
+    return if court.blank?
+
+    unless court.available?
+      errors.add(:court, "is not available for new bookings")
+    end
+  end
+
+  def court_must_be_available
+    return if court.blank?
+
+    if court.booked? || court.maintenance?
+      errors.add(:court, "is not available for bookings at this time")
+    end
+  end
+
   def not_past_dates
     return if current_date.blank?
     errors.add(:current_date, "Date cannot be in the past") if current_date < Date.current

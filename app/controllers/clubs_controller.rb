@@ -82,7 +82,7 @@ class ClubsController < ApplicationController
           next
         end
 
-        @club.courts.each do |court|
+        @club.courts.available.each do |court|
           slots << {
             court: court,
             date: date,

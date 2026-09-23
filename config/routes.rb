@@ -16,7 +16,7 @@ Rails.application.routes.draw do
   resources :clubs do
     resources :schedules, only: %i[new create]
     resources :reservations, only: %i[new create]
-    resources :courts, only: %i[new create]
+    resources :courts
   end
   resources :courts
   root "clubs#index"

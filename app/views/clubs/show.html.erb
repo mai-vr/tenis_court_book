@@ -4,7 +4,7 @@
   <p><%= @club.location.street %> <%= @club.location.number %>, <%= @club.location.city %></p>
   <p><%= @club.phone %> <% if @club.email.present? %>· <%= @club.email %><% end %></p>
 
-  <h2>Horarios</h2>
+  <h2>Horarios del Club</h2>
   <% if policy(Schedule).new? %>
     <%= link_to "Agregar horarios", new_club_schedule_path(@club) %>
   <% end %>
@@ -19,10 +19,38 @@
     <p>No hay horarios cargados.</p>
   <% end %>
 
+  <hr>
+
+  <%# --- SECCIÓN 1: INFORMACIÓN Y GESTIÓN DE CANCHAS --- %>
+  <h2>Canchas</h2>
   <% if policy(Court).new? %>
-    <%= link_to "Add court", new_club_court_path(@club) %>
+    <%= link_to "Agregar cancha", new_club_court_path(@club) %>
   <% end %>
 
+  <% if @club.courts.any? %>
+    <ul>
+      <% @club.courts.each do |court| %>
+        <li>
+          <strong><%= court.description %></strong> — 
+          $<%= court.price_per_hour %>/hs | 
+          <%= court.material %> | 
+          <%= court.indoor? ? "Cubierta (Indoor)" : "Descubierta" %> | 
+          <span>Estado: <strong><%= court.status.humanize %></strong></span>
+          
+          <%# Si tenés un show/edit de court %>
+          <% if policy(court).show? %>
+            · <%= link_to "Ver cancha", club_court_path(@club, court) %>
+          <% end %>
+        </li>
+      <% end %>
+    </ul>
+  <% else %>
+    <p>No hay canchas registradas en este club.</p>
+  <% end %>
+
+  <hr>
+
+  <%# --- SECCIÓN 2: BLOQUES DE HORARIOS DISPONIBLES --- %>
   <h2>Reservar una cancha</h2>
   <% if @booking_slots.any? %>
     <ul>
@@ -32,8 +60,9 @@
           <ul>
             <% slots.each do |slot| %>
               <li>
-                <%= slot[:court].description %>:
+                <strong><%= slot[:court].description %></strong>: 
                 <%= slot[:start_time].strftime("%H:%M") %> - <%= slot[:end_time].strftime("%H:%M") %>
+                
                 <% if slot[:available] %>
                   <%= link_to "Reservar", new_club_reservation_path(
                     @club,
@@ -57,8 +86,10 @@
     <p>No hay bloques disponibles para reservar.</p>
   <% end %>
 
-  <% if policy(@club).edit? %>
-    <%= link_to "Editar club", edit_club_path(@club) %>
-  <% end %>
-  <%= link_to "Volver a clubs", clubs_path %>
+  <div style="margin-top: 20px;">
+    <% if policy(@club).edit? %>
+      <%= link_to "Editar club", edit_club_path(@club) %> |
+    <% end %>
+    <%= link_to "Volver a clubs", clubs_path %>
+  </div>
 </section>
