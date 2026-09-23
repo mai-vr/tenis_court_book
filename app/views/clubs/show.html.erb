@@ -19,6 +19,44 @@
     <p>No hay horarios cargados.</p>
   <% end %>
 
+  <% if policy(Court).new? %>
+    <%= link_to "Add court", new_club_court_path(@club) %>
+  <% end %>
+
+  <h2>Reservar una cancha</h2>
+  <% if @booking_slots.any? %>
+    <ul>
+      <% @booking_slots.group_by { |slot| slot[:date] }.each do |date, slots| %>
+        <li>
+          <strong><%= l(date, format: :long) %></strong>
+          <ul>
+            <% slots.each do |slot| %>
+              <li>
+                <%= slot[:court].description %>:
+                <%= slot[:start_time].strftime("%H:%M") %> - <%= slot[:end_time].strftime("%H:%M") %>
+                <% if slot[:available] %>
+                  <%= link_to "Reservar", new_club_reservation_path(
+                    @club,
+                    court_id: slot[:court].id,
+                    reservation: {
+                      current_date: slot[:date],
+                      start_time: slot[:start_time].strftime("%H:%M"),
+                      end_time: slot[:end_time].strftime("%H:%M")
+                    }
+                  ) %>
+                <% else %>
+                  <span>Reservado</span>
+                <% end %>
+              </li>
+            <% end %>
+          </ul>
+        </li>
+      <% end %>
+    </ul>
+  <% else %>
+    <p>No hay bloques disponibles para reservar.</p>
+  <% end %>
+
   <% if policy(@club).edit? %>
     <%= link_to "Editar club", edit_club_path(@club) %>
   <% end %>

@@ -1,11 +1,16 @@
 <section>
-    <%= form_with model: court do |form| %>   
+    <%= form_with model: (@club ? [@club, court] : court) do |form| %>   
         <% if form.object.errors.any? %>
             <p class="error"><%= form.object.errors.full_messages.first %></p>
         <% end %>
         
-        <%= form.label :club_id, "Club" %>
-        <%= form.collection_select :club_id, @clubs, :id, :name, { prompt: "Select a club" } %>
+        <% if @club %>
+            <%= form.hidden_field :club_id, value: @club.id %>
+            <p><strong>Club:</strong> <%= @club.name %></p>
+        <% else %>
+            <%= form.label :club_id, "Club" %>
+            <%= form.collection_select :club_id, @clubs, :id, :name, { prompt: "Select a club" } %>
+        <% end %>
         
         <%= form.label :material, "Material" %>
         <%= form.text_field :material %>
@@ -20,7 +25,7 @@
         <%= form.text_field :description %>
 
         <%= form.label :price_per_hour, "Price per hour" %>
-        <%= form.number_field :price_per_hour %>
+        <%= form.number_field :price_per_hour, min: 0.01, step: 0.01, required: true %>
 
         <%= form.submit "Save court" %>
     <% end %>

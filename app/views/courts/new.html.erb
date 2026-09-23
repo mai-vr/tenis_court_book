@@ -1,7 +1,5 @@
 <section>
-    <h3>
-        New court
-    </h3>
+    <h3>New court<%= " for #{@club.name}" if @club %></h3>
     <%= render "form", court: @court %>
-    <%= link_to "Cancel", courts_path %>
+    <%= link_to "Cancel", @club ? club_path(@club) : courts_path %>
 </section>

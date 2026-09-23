@@ -1,15 +1,16 @@
 class Reservation < ApplicationRecord
-  belongs_to :users
-  belongs_to :courts
-  belongs_to :payments
+  belongs_to :user
+  belongs_to :court
+  belongs_to :payment
   validates :current_date, presence: true
   attribute :current_date, :date, default: -> { Date.current }
-  validates :start_time, presence: true, comparison: {less_than: :end_time, greather_than: :current_date}
-  validates :end_time, presence: true, comparison: {greather_than: :start_time}
+  validates :start_time, presence: true, comparison: { less_than: :end_time }
+  validates :end_time, presence: true, comparison: { greater_than: :start_time }
 
-  validates :not_past_dates
-  validates :overlapping_reservations
-  validates :court_reservations
+  validate :not_past_dates
+  validate :one_hour_slot
+  validate :overlapping_reservations
+  validate :club_schedule
 
   private 
   def not_past_dates
@@ -27,15 +28,21 @@ class Reservation < ApplicationRecord
     errors.add(:base, "The court is already booked") if overlapping.exists?
   end
 
-  def court_reservations # Validates the court´s schedule
-      return if court_id.blank? || current_date.blank? || start_time.blank? || end_time.blank?
+  def one_hour_slot
+    return if start_time.blank? || end_time.blank?
 
-      day_key = Schedule.day_weeks.key(current_date.wday) # '.wday' it´s a Ruby´s method that return a num from 0 to 6 representing the day of the week.
-      schedule_of_court = Schedule.where(court_id: court_id, day_week: day_key)
-                          .where("start_time <= ? AND end_time >= ?", start_time, end_time)
-                          .exists?
-      unless schedule_of_court
-        return errors.add(:base, "The court is not available in that date/time")
-      end
-    end
+    errors.add(:base, "A reservation must be exactly one hour") unless end_time - start_time == 1.hour
   end
+
+  def club_schedule
+    return if court.blank? || current_date.blank? || start_time.blank? || end_time.blank?
+
+    day_key = Schedule.day_weeks.key(current_date.wday)
+    schedule_exists = court.club.schedules
+                           .where(day_week: day_key)
+                           .where("start_time <= ? AND end_time >= ?", start_time, end_time)
+                           .exists?
+
+    errors.add(:base, "The court is not available in that date/time") unless schedule_exists
+  end
+end

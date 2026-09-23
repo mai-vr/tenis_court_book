@@ -15,6 +15,8 @@ Rails.application.routes.draw do
   # root "posts#index"
   resources :clubs do
     resources :schedules, only: %i[new create]
+    resources :reservations, only: %i[new create]
+    resources :courts, only: %i[new create]
   end
   resources :courts
   root "clubs#index"

@@ -7,6 +7,7 @@ class ClubsController < ApplicationController
 
   def show
     @schedules = @club.schedules.order(:day_week, :start_time)
+    @booking_slots = build_booking_slots
   end
 
   def new
@@ -64,5 +65,48 @@ class ClubsController < ApplicationController
 
   def location_params
     params.expect(location: %i[street number city])
+  end
+
+  def build_booking_slots
+    @schedules.flat_map do |schedule|
+      date = next_occurrence(schedule.day_week_before_type_cast, schedule.end_time)
+      current_time = schedule.start_time
+      slots = []
+
+      while current_time < schedule.end_time
+        end_time = current_time + 1.hour
+        break if end_time > schedule.end_time
+
+        if date == Date.current && end_time.seconds_since_midnight <= Time.current.seconds_since_midnight
+          current_time = end_time
+          next
+        end
+
+        @club.courts.each do |court|
+          slots << {
+            court: court,
+            date: date,
+            start_time: current_time,
+            end_time: end_time,
+            available: !Reservation.exists?(
+              court: court,
+              current_date: date,
+              start_time: current_time,
+              end_time: end_time
+            )
+          }
+        end
+
+        current_time = end_time
+      end
+
+      slots
+    end
+  end
+
+  def next_occurrence(day_of_week, closing_time)
+    date = Date.current + ((day_of_week.to_i - Date.current.wday) % 7)
+    date += 7 if date == Date.current && closing_time.seconds_since_midnight <= Time.current.seconds_since_midnight
+    date
   end
 end
