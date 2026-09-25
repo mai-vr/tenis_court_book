@@ -7,5 +7,9 @@ class ReservationPolicy < ApplicationPolicy
     create?
   end
 
+  def show?
+    true
+  end
+
   alias new? create?
 end

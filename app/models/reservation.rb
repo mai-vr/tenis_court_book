@@ -13,23 +13,8 @@ class Reservation < ApplicationRecord
   validate :overlapping_reservations
   validate :club_schedule
   validate :court_must_be_available
-  validate :court_must_be_available
-
-  after_create :mark_court_as_booked
 
   private 
-
-  def mark_court_as_booked
-    court.update!(status: :booked)
-  end
-
-  def court_must_be_available
-    return if court.blank?
-
-    unless court.available?
-      errors.add(:court, "is not available for new bookings")
-    end
-  end
 
   def court_must_be_available
     return if court.blank?

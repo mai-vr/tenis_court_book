@@ -21,7 +21,6 @@
 
   <hr>
 
-  <%# --- SECCIÓN 1: INFORMACIÓN Y GESTIÓN DE CANCHAS --- %>
   <h2>Canchas</h2>
   <% if policy(Court).new? %>
     <%= link_to "Agregar cancha", new_club_court_path(@club) %>
@@ -35,7 +34,6 @@
           $<%= court.price_per_hour %>/hs | 
           <%= court.material %> | 
           <%= court.indoor? ? "Cubierta (Indoor)" : "Descubierta" %> | 
-          <span>Estado: <strong><%= court.status.humanize %></strong></span>
           
           <%# Si tenés un show/edit de court %>
           <% if policy(court).show? %>
@@ -50,7 +48,6 @@
 
   <hr>
 
-  <%# --- SECCIÓN 2: BLOQUES DE HORARIOS DISPONIBLES --- %>
   <h2>Reservar una cancha</h2>
   <% if @booking_slots.any? %>
     <ul>

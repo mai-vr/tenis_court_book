@@ -16,10 +16,39 @@ class ReservationTest < ActiveSupport::TestCase
     assert @reservation.valid?
   end
 
-  test "marks the court as booked after creating a reservation" do
+  test "keeps the court available after creating a reservation" do
     assert @reservation.save
 
-    assert @reservation.court.booked?
+    assert @reservation.court.available?
+  end
+
+  test "allows another reservation on the same court in a different slot" do
+    assert @reservation.save
+
+    later_reservation = Reservation.new(
+      user: users(:two),
+      court: @reservation.court,
+      current_date: @reservation.current_date,
+      start_time: "11:00",
+      end_time: "12:00"
+    )
+
+    assert later_reservation.valid?, later_reservation.errors.full_messages.to_sentence
+  end
+
+  test "rejects overlapping reservations on the same court" do
+    assert @reservation.save
+
+    overlapping_reservation = Reservation.new(
+      user: users(:two),
+      court: @reservation.court,
+      current_date: @reservation.current_date,
+      start_time: "10:30",
+      end_time: "11:30"
+    )
+
+    assert_not overlapping_reservation.valid?
+    assert_includes overlapping_reservation.errors[:base], "The court is already booked"
   end
 
   test "rejects reservations longer than one hour" do
