@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_09_22_175202) do
+ActiveRecord::Schema[8.1].define(version: 2026_09_25_112728) do
   create_table "clubs", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.string "description"
@@ -56,8 +56,9 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_22_175202) do
     t.datetime "created_at", null: false
     t.date "current_date"
     t.time "end_time"
-    t.integer "payment_id", null: false
+    t.integer "payment_id"
     t.time "start_time"
+    t.integer "status"
     t.datetime "updated_at", null: false
     t.integer "user_id", null: false
     t.index ["court_id"], name: "index_reservations_on_court_id"

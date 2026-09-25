@@ -16,6 +16,12 @@ class ReservationTest < ActiveSupport::TestCase
     assert @reservation.valid?
   end
 
+  test "marks the court as booked after creating a reservation" do
+    assert @reservation.save
+
+    assert @reservation.court.booked?
+  end
+
   test "rejects reservations longer than one hour" do
     @reservation.end_time = "11:30"
 

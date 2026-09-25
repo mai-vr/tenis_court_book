@@ -1,7 +1,8 @@
 class Reservation < ApplicationRecord
   belongs_to :user
   belongs_to :court
-  belongs_to :payment
+  belongs_to :payment, optional: true
+  enum :status, { pending: 0, confirmed: 1, cancelled: 2 }, default: :pending
   validates :current_date, presence: true
   attribute :current_date, :date, default: -> { Date.current }
   validates :start_time, presence: true, comparison: { less_than: :end_time }
@@ -14,7 +15,13 @@ class Reservation < ApplicationRecord
   validate :court_must_be_available
   validate :court_must_be_available
 
+  after_create :mark_court_as_booked
+
   private 
+
+  def mark_court_as_booked
+    court.update!(status: :booked)
+  end
 
   def court_must_be_available
     return if court.blank?

@@ -1,0 +1,17 @@
+<h1>¡Reserva Confirmada!</h1>
+
+<div class="reservation-card" style="padding: 15px; border: 1px solid #28a745; border-radius: 8px;">
+  <p><strong>Estado:</strong> <span style="color: green; font-weight: bold;"><%= @reservation.status.titleize %></span></p>
+  <p><strong>Club:</strong> <%= @club.name %></p>
+  <p><strong>Cancha:</strong> <%= @reservation.court.description %></p>
+  <p><strong>Fecha:</strong> <%= l(@reservation.current_date, format: :long) rescue @reservation.current_date %></p>
+  <p><strong>Horario:</strong> <%= @reservation.start_time.strftime("%H:%M") rescue @reservation.start_time %> - <%= @reservation.end_time.strftime("%H:%M") rescue @reservation.end_time %></p>
+  
+  <% if @reservation.payment %>
+    <hr>
+    <p><strong>Método de Pago:</strong> <%= @reservation.payment.payment_method.titleize %></p>
+    <p><strong>Monto Pagado:</strong> <%= number_to_currency(@reservation.payment.total) %></p>
+  <% end %>
+</div>
+
+<%= link_to "Volver al Club", club_path(@club), class: "btn btn-secondary", style: "margin-top: 15px; display: inline-block;" %>

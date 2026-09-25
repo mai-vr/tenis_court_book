@@ -3,19 +3,13 @@
         Selected court
     </h1>
 
-    # <% if policy(Court).new? %>
-    #     <div>
-    #         <%= link_to "New court", new_court_path %>
-    #     </div>
-    # <%end%>
-
     <div>
         
             <% if policy(@court).edit? %>
-                <%= link_to "Edit", edit_court_path(@court) %>
+                <%= link_to "Edit", edit_club_court_path(@court.club, @court) %>
             <% end %>
             <% if policy(@court).destroy? %>
-                <%= button_to "Delete", court_path(@court), method: :delete %>
+                <%= button_to "Delete",club_court_path(@court.club, @court), method: :delete %>
             <% end %>
             <div>
                 <h4>

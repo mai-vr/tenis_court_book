@@ -3,5 +3,9 @@ class ReservationPolicy < ApplicationPolicy
     user.present?
   end
 
+  def new?
+    create?
+  end
+
   alias new? create?
 end

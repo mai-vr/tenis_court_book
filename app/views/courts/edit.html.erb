@@ -3,5 +3,5 @@
         Edit court
     </h3>
     <%= render "form", court: @court %>
-    <%= link_to "Cancel", courts_path %>
+    <%= link_to "Cancel", club_court_path(@court.club, @court) %>
 </section>

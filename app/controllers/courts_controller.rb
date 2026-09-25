@@ -35,7 +35,7 @@ class CourtsController < ApplicationController
     def update
         authorize @court
         if @court.update(court_params)
-            redirect_to @court
+            redirect_to [@court.club, @court]
         else
             render :edit, status: :unprocessable_entity
         end

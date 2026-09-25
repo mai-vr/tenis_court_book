@@ -1,5 +1,5 @@
 <section>
-    <%= form_with model: (@club ? [@club, court] : court) do |form| %>   
+    <%= form_with model: (@court.club ? [@court.club, court] : court) do |form| %>   
         <% if form.object.errors.any? %>
             <p class="error"><%= form.object.errors.full_messages.first %></p>
         <% end %>
