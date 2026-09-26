@@ -1,0 +1,84 @@
+<section>
+  <h1><%= @club.name %></h1>
+  <p><%= @club.description %></p>
+  <p><%= @club.location.street %> <%= @club.location.number %>, <%= @club.location.city %></p>
+  <p><%= @club.phone %> <% if @club.email.present? %>· <%= @club.email %><% end %></p>
+
+  <h2>Horarios del Club</h2>
+  <% if policy(Schedule).new? %>
+    <%= link_to "Agregar horarios", new_admin_club_schedule_path(@club) %>
+  <% end %>
+
+  <% if @schedules.any? %>
+    <ul>
+      <% @schedules.each do |schedule| %>
+        <li><%= schedule.day_week.humanize %>: <%= schedule.start_time.strftime("%H:%M") %> - <%= schedule.end_time.strftime("%H:%M") %></li>
+      <% end %>
+    </ul>
+  <% else %>
+    <p>No hay horarios cargados.</p>
+  <% end %>
+
+  <hr>
+
+  <h2>Canchas</h2>
+  <% if policy(Court).new? %>
+    <%= link_to "Agregar cancha", new_admin_club_court_path(@club) %>
+  <% end %>
+
+  <% if @club.courts.any? %>
+    <ul>
+      <% @club.courts.each do |court| %>
+        <li>
+          <strong><%= court.description %></strong> — 
+          $<%= court.price_per_hour %>/hs | 
+          <%= court.material %> | 
+          <%= court.indoor? ? "Cubierta (Indoor)" : "Descubierta" %> | 
+          
+          <%# Si tenés un show/edit de court %>
+          <% if policy(court).show? %>
+            · <%= link_to "Ver cancha", admin_club_court_path(@club, court) %>
+          <% end %>
+        </li>
+      <% end %>
+    </ul>
+  <% else %>
+    <p>No hay canchas registradas en este club.</p>
+  <% end %>
+
+  <hr>
+
+  <h2>Reservar una cancha</h2>
+  <% if @booking_slots.any? %>
+    <ul>
+      <% @booking_slots.group_by { |slot| slot[:date] }.each do |date, slots| %>
+        <li>
+          <strong><%= l(date, format: :long) %></strong>
+          <ul>
+            <% slots.each do |slot| %>
+              <li>
+                <%= slot[:start_time].strftime("%H:%M") %> - <%= slot[:end_time].strftime("%H:%M") %>
+                
+                <% if slot[:available] %>
+                  <%= link_to "Reservar", new_admin_club_reservation_path(
+                    @club,
+                    reservation: {
+                      current_date: slot[:date],
+                      start_time: slot[:start_time].strftime("%H:%M"),
+                      end_time: slot[:end_time].strftime("%H:%M")
+                    }
+                  ) %>
+                  <small>(Canchas disponibles: <%= slot[:available_courts].count %>)</small>
+                <% else %>
+                  <span>No disponible</span>
+                <% end %>
+              </li>
+            <% end %>
+          </ul>
+        </li>
+      <% end %>
+    </ul>
+  <% else %>
+    <p>No hay bloques disponibles para reservar.</p>
+  <% end %>
+</section>

@@ -1,0 +1,30 @@
+<section>
+    <h1>
+        Courts
+    </h1>
+    <% if policy(Court).new?%>
+        <%= link_to "New court", new_admin_club_court_path(params[:club_id]) %>
+    <%end%>
+    <div>
+        <% @courts.each do |c| %>
+            <div>
+                <h4>
+                    <%= link_to c.club.name, admin_club_court_path(c.club, c) %>
+                </h4>
+                <>
+                    <%= c.material %>
+                </p>
+                <p>
+                    <% if c.indoor %>
+                        Indoor
+                    <%else%>
+                        Outdoor
+                    <%end%>
+                </p>
+                <p>
+                    $ <%= c.price_per_hour %> per hour
+                </p>
+            </div>
+        <% end %>
+    </div>
+</section>

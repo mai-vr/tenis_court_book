@@ -1,0 +1,39 @@
+<h1>Confirmar Pago y Reserva</h1>
+
+<div class="reservation-summary" style="margin-bottom: 20px; padding: 15px; border: 1px solid #ccc; border-radius: 8px;">
+  <p><strong>Club:</strong> <%= @club.name %></p>
+  <p><strong>Cancha:</strong> <%= @reservation.court.description %></p>
+  <p><strong>Fecha:</strong> <%= l(@reservation.current_date, format: :long) rescue @reservation.current_date %></p>
+  <p><strong>Horario:</strong> <%= @reservation.start_time.strftime("%H:%M") rescue @reservation.start_time %> - <%= @reservation.end_time.strftime("%H:%M") rescue @reservation.end_time %></p>
+  <p><strong>Monto Total:</strong> <%= number_to_currency(@payment.total) %></p>
+</div>
+
+<%= form_with(model: [:admin, @club, @reservation, @payment], url: admin_club_reservation_payments_path(@club, @reservation)) do |f| %>
+  
+  <% if @payment.errors.any? %>
+    <div style="color: red; margin-bottom: 15px;">
+      <h4>Error al procesar el pago:</h4>
+      <ul>
+        <% @payment.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field" style="margin-bottom: 15px;">
+    <%= f.label :payment_method, "Seleccionar Método de Pago" %>
+    <%= f.select :payment_method, 
+                 [
+                   ['Efectivo', 'cash'], 
+                   ['QR', 'qr'], 
+                   ['Mercado Pago', 'mercado_pago']
+                 ], 
+                 { prompt: "Elige una opción" }, 
+                 { class: "form-control" } %>
+  </div>
+
+  <div class="actions">
+    <%= f.submit "Pagar y Confirmar Reserva"%>
+  </div>
+<% end %>

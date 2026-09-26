@@ -1,0 +1,5 @@
+<section>
+    <h3>New court<%= " for #{@club.name}" if @club %></h3>
+    <%= render "form", court: @court %>
+    <%= link_to "Cancel", @club ? admin_club_path(@club) : admin_club_courts_path(params[:club_id]) %>
+</section>
