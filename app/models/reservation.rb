@@ -13,6 +13,7 @@ class Reservation < ApplicationRecord
   validate :overlapping_reservations
   validate :club_schedule
   validate :court_must_be_available
+  validate :duration_must_be_one_hour
 
   private 
 
@@ -55,5 +56,14 @@ class Reservation < ApplicationRecord
                            .exists?
 
     errors.add(:base, "The court is not available in that date/time") unless schedule_exists
+  end
+
+
+  def duration_must_be_one_hour
+    return unless start_time.present? && end_time.present?
+
+    unless (end_time - start_time) == 1.hour
+      errors.add(:base, "La reserva debe ser de exactamente 1 hora.")
+    end
   end
 end
