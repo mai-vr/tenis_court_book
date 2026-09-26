@@ -1,6 +1,6 @@
 class Api::V1::ReservationsController < Api::V1::BaseController
-before_action :set_club
-      # POST /api/v1/clubs/:club_id/reservations
+    before_action :set_club
+    before_action :authenticate_request!
       def create
         @court = @club.courts.find_by(id: reservation_params[:court_id])
 
@@ -9,35 +9,29 @@ before_action :set_club
         end
 
         ActiveRecord::Base.transaction do
-          # 1. Se crea el registro de pago (o seña)
           @payment = Payment.create!(
             payment_method: params[:payment_method] || "cash",
             total: @court.price_per_hour,
             already_payed: @court.price_per_hour,
-            status: :pending
+            status: :in_process
           )
 
-          # 2. Se instancia la reserva con los parámetros formateados
           @reservation = @club.reservations.build(formatted_reservation_params)
           @reservation.court = @court
           @reservation.user_id = params[:user_id] || current_user&.id
           @reservation.payment = @payment
           @reservation.status = :pending
 
-          # @reservation.save! ejecutará las validaciones del modelo automáticamente
           if @reservation.save
             render json: {
               message: "Reserva realizada con éxito.",
               reservation: @reservation.as_json(include: [:court, :payment])
             }, status: :created
           else
-            # Si rompe la regla de 1 hora, horario del club o solapamiento,
-            # cancelamos la transacción devolviendo los errores específicos.
             raise ActiveRecord::Rollback
           end
         end
 
-        # Si falla la validación y se hace Rollback:
         if @reservation && !@reservation.persisted?
           render json: { errors: @reservation.errors.full_messages }, status: :unprocessable_entity
         end
@@ -53,7 +47,6 @@ before_action :set_club
         params.require(:reservation).permit(:current_date, :start_time, :end_time, :court_id)
       end
 
-      # Reutilizamos la misma lógica de parseo que tenías en Admin
       def formatted_reservation_params
         p = reservation_params
         return p if p.empty?
@@ -77,4 +70,4 @@ before_action :set_club
         Time.zone.parse("#{date} #{time_value}")
       end
     end
-end
+
