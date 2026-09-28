@@ -24,6 +24,9 @@
     <%= form.label :description %>
     <%= form.text_area :description %>
 
+    <%= form.label :logo, "Logo del Club" %>
+    <%= form.file_field :logo, accept: "image/png, image/jpeg, image/jpg" %>
+
     <h3>Location</h3>
     <%= fields_for :location, location do |location_form| %>
       <%= location_form.label :street %>

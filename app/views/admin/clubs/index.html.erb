@@ -7,6 +7,11 @@
 
   <% @clubs.each do |club| %>
     <article>
+      <% if club.logo.attached? %>
+        <%= image_tag club.logo %>
+      <% else %>
+        <%= image_tag "default_logo.jpg" %>
+      <% end %>
       <h2><%= link_to club.name, admin_club_path(club) %></h2>
       <p><%= club.description %></p>
       <p><%= club.location.street %> <%= club.location.number %>, <%= club.location.city %></p>

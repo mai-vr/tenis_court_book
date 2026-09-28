@@ -3,7 +3,7 @@ module Admin
     before_action :set_club, only: %i[show edit update destroy]
 
     def index
-      @clubs = Club.includes(:location, :schedules).order(:name)
+      @clubs = Club.includes(:location, :schedules).with_attached_logo.order(:name)
     end
 
     def show
@@ -28,7 +28,7 @@ module Admin
         @club.save!
       end
 
-      redirect_to @club, notice: "Club created successfully."
+      redirect_to admin_club_path(@club), notice: "Club created successfully."
     rescue ActiveRecord::RecordInvalid
       render :new, status: :unprocessable_entity
     end
@@ -41,7 +41,7 @@ module Admin
     def update
       authorize @club
       if @club.update(club_params) && @club.location.update(location_params)
-        redirect_to @club, notice: "Club updated successfully."
+        redirect_to admin_club_path(@club), notice: "Club updated successfully."
       else
         @location = @club.location
         render :edit, status: :unprocessable_entity
@@ -61,7 +61,7 @@ module Admin
     end
 
     def club_params
-      params.expect(club: %i[name phone email description])
+      params.expect(club: %i[name phone email description logo])
     end
 
     def location_params
@@ -83,7 +83,7 @@ module Admin
           next
         end
 
-        # Buscamos qué canchas están libres en este bloque específico
+        # Buscar qué canchas estan libres en el bloque especificado.
         available_courts = @club.courts.available.reject do |court|
           Reservation.exists?(
             court: court,

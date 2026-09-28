@@ -1,8 +1,23 @@
 <section>
-  <h1><%= @club.name %></h1>
-  <p><%= @club.description %></p>
-  <p><%= @club.location.street %> <%= @club.location.number %>, <%= @club.location.city %></p>
-  <p><%= @club.phone %> <% if @club.email.present? %>· <%= @club.email %><% end %></p>
+  <%= link_to "Volver", admin_clubs_path %>
+
+  <div>
+    <% if @club.logo.attached? %>
+      <%= image_tag @club.logo,  alt:"Logo del club"%>
+    <% else %>
+      <%= image_tag "default_logo.jpg", alt: "Sin logo" %>
+    <% end %>
+    <h1><%= @club.name %></h1>
+    <p><%= @club.description %></p>
+    <p><%= @club.location.street %> <%= @club.location.number %>, <%= @club.location.city %></p>
+    <p><%= @club.phone %> <% if @club.email.present? %>· <%= @club.email %><% end %></p>
+
+    <% if policy(@club).edit? %>
+      <p>
+        <%= link_to "Editar club", edit_admin_club_path(@club) %>
+      </p>
+    <% end %>
+  </div>
 
   <h2>Horarios del Club</h2>
   <% if policy(Schedule).new? %>
