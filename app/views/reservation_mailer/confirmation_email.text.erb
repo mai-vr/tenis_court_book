@@ -1,0 +1,12 @@
+<h2>Hola, <%= @user.first_name %></h2>
+<p>Tu reserva fue exitosa. Detalles de la reserva:</p>
+
+<ul>
+  <li>Club:<%= @club.name %></li>
+  <li>Cancha: <%= @court.description %> (<%= @court.material %>)</li>
+  <li>Fecha:<%= l(@reservation.current_date, format: :long) %></li>
+  <li>Horario: <%= @reservation.start_time.strftime("%H:%M") %> - <%= @reservation.end_time.strftime("%H:%M") %> hs</li>
+  <li>Monto Total:$<%= @reservation.payment&.total %></li>
+</ul>
+
+<p>Esperamos que disfrutes el partido</p>
