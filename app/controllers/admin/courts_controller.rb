@@ -21,7 +21,7 @@ module Admin
             authorize @court
 
             if @court.save 
-                redirect_to @club || @court
+                redirect_to admin_club_court_path(@court.club) || admin_club_court_path(@court.club, @court)
             else
                 @clubs = Club.all unless @club
                 render :new, status: :unprocessable_entity
@@ -36,7 +36,7 @@ module Admin
         def update
             authorize @court
             if @court.update(court_params)
-                redirect_to [@court.club, @court]
+                redirect_to admin_club_court_path(@court.club, @court)
             else
                 render :edit, status: :unprocessable_entity
             end
@@ -45,7 +45,7 @@ module Admin
         def destroy
             authorize @court
             @court.destroy
-            redirect_to courts_path
+            redirect_to admin_club_court_path(@court.club)
         end
 
         private
