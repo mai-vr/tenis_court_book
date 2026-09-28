@@ -1,31 +1,51 @@
 class ClubPolicy < ApplicationPolicy
   def index?
-    true
+    true 
   end
 
   def show?
-    true
+    true 
   end
 
   def create?
-    admin?
+    superadmin? || (club_admin? && user.club.nil?)
   end
 
   alias new? create?
 
   def update?
-    admin?
+    superadmin? || owner?
   end
 
   alias edit? update?
 
   def destroy?
-    admin?
+    superadmin? || owner?
+  end
+
+  class Scope < Scope # Dependiendo del rol, los accesos que tendrá el usuario.
+    def resolve
+      if user&.superadmin?
+        scope.all 
+      elsif user&.club_admin?
+        scope.where(id: user.club_id) # El slub_admin solo ve su propio club.
+      else
+        scope.none 
+      end
+    end
   end
 
   private
 
-  def admin?
-    user.present? && user.admin?
+  def superadmin?
+    user.present? && user.superadmin?
+  end
+
+  def club_admin?
+    user.present? && user.club_admin?
+  end
+
+  def owner?
+    club_admin? && user.club_id == record.id
   end
 end

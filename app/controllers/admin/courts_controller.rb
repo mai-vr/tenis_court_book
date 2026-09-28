@@ -21,7 +21,7 @@ module Admin
             authorize @court
 
             if @court.save 
-                redirect_to admin_club_court_path(@court.club) || admin_club_court_path(@court.club, @court)
+                redirect_to admin_club_court_path(@club || @court.club, @court)
             else
                 @clubs = Club.all unless @club
                 render :new, status: :unprocessable_entity

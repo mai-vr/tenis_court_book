@@ -2,7 +2,9 @@
     <h1>
         Selected court
     </h1>
-
+    <div>
+        <%= link_to "Volver al club", admin_club_path(@court.club) %>
+    </div>
     <div>
         
             <% if policy(@court).edit? %>

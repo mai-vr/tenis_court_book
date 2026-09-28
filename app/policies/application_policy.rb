@@ -36,6 +36,12 @@ class ApplicationPolicy
     false
   end
 
+  private
+
+  def superadmin? = user&.superadmin?
+  def club_admin? = user&.club_admin?
+  def manages_club?(club_id) = club_admin? && user.club_id == club_id
+
   class Scope
     def initialize(user, scope)
       @user = user

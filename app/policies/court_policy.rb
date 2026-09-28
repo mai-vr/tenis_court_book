@@ -38,7 +38,7 @@ class CourtPolicy < ApplicationPolicy
 
   def admin?
     # user.present? verifica que haya sesión y user.admin? usa el helper del enum
-    user.present? && user.admin?
+    user.present? && user.backoffice?
   end
 
   class Scope < ApplicationPolicy::Scope

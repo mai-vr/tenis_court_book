@@ -1,0 +1,37 @@
+<div>
+  <div>
+    <h1>Gestión de Usuarios</h1>
+    <%= link_to "Registrar Nuevo Club Admin", new_admin_user_path%>
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Email</th>
+        <th>Rol</th>
+        <th>Estado del Club</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @users.each do |user| %>
+        <tr>
+          <td><%= user.email_address %></td>
+          <td>
+            <%= user.role.humanize %>
+          </td>
+          <td>
+            <% if user.club_admin? %>
+              <% if user.club.present? %>
+                <span><%= user.club.name %></span>
+              <% else %>
+                <span>Pendiente de cargar club</span>
+              <% end %>
+            <% else %>
+              <span>Sin club</span>
+            <% end %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

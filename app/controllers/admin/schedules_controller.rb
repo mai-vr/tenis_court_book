@@ -12,7 +12,7 @@ module Admin
       authorize @schedule
 
       if @schedule.save
-        redirect_to @club, notice: "Schedule added successfully."
+        redirect_to admin_club_path(@club), notice: "Schedule added successfully."
       else
         render :new, status: :unprocessable_entity
       end

@@ -3,10 +3,11 @@ module Admin
     before_action :set_club, only: %i[show edit update destroy]
 
     def index
-      @clubs = Club.includes(:location, :schedules).with_attached_logo.order(:name)
+      @clubs = policy_scope(Club).includes(:location, :schedules).with_attached_logo.order(:name)
     end
 
     def show
+      authorize @club
       @schedules = @club.schedules.order(:day_week, :start_time)
       @booking_slots = build_booking_slots
     end
@@ -26,6 +27,8 @@ module Admin
         @location.save!
         @club.location = @location
         @club.save!
+
+        current_user.update!(club: @club) if current_user.club_admin?
       end
 
       redirect_to admin_club_path(@club), notice: "Club created successfully."
@@ -57,7 +60,7 @@ module Admin
     private
 
     def set_club
-      @club = Club.find(params[:id])
+      @club = policy_scope(Club).find(params[:id])
     end
 
     def club_params

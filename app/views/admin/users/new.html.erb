@@ -1,0 +1,35 @@
+<div>
+  <h1>Registrar Nuevo Admin de Club</h1>
+
+  <%= form_with model: [:admin, @user] do |f| %>
+    <% if @user.errors.any? %>
+      <div>
+        <ul>
+          <% @user.errors.full_messages.each do |msg| %>
+            <li><%= msg %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <div>
+      <%= f.label :email_address, "Correo Electrónico" %><br>
+      <%= f.email_field :email_address, required: true %>
+    </div>
+
+    <div>
+      <%= f.label :password, "Contraseña" %><br>
+      <%= f.password_field :password, required: true%>
+    </div>
+
+    <div>
+      <%= f.label :password_confirmation, "Confirmar Contraseña" %><br>
+      <%= f.password_field :password_confirmation, required: true%>
+    </div>
+
+    <div>
+      <%= f.submit "Crear Club Admin"%>
+      <%= link_to "Cancelar", admin_users_path%>
+    </div>
+  <% end %>
+</div>

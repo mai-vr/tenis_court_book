@@ -8,6 +8,6 @@ class SchedulePolicy < ApplicationPolicy
   private
 
   def admin?
-    user.present? && user.admin?
+    user.present? && user.backoffice?
   end
 end
