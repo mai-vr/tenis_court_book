@@ -4,7 +4,8 @@ class Court < ApplicationRecord
   validates :club, presence: true
   validates :price_per_hour, numericality: {greater_than: 0}, presence: true
   validates :material, length: {in: 3..20}, presence: true
-  validates :description, length: {in: 3..250, too_long: "%{count} characters is the maximum allowed"}, presence: true
+  validates :description, length: {in: 3..250, too_long: "%{count} characters is the maximum allowed"}, presence: true, uniqueness: {scope: :club_id, case_sensitive: false, message: "Already exists that court in this club"}
   validates :indoor, inclusion: [true, false]
   enum :status, {booked: 0, available: 1, maintenance: 2}
+  validates :status, presence: true, inclusion: {in: statuses.keys}
 end

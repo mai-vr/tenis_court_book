@@ -66,7 +66,7 @@
   <h2>Reservar una cancha</h2>
   <% if @booking_slots.any? %>
     <ul>
-      <% @booking_slots.group_by { |slot| slot[:date] }.each do |date, slots| %>
+      <% @booking_slots.group_by { |slot| slot[:date] }.sort_by { |date, _| date }.each do |date, slots| %>
         <li>
           <strong><%= l(date, format: :long) %></strong>
           <ul>
