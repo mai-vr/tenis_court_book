@@ -16,7 +16,7 @@ class SessionsController < ApplicationController
       else
         redirect_to root_path
       end
-    
+
     else
       redirect_to new_session_path, alert: "Try another email address or password."
     end

@@ -15,7 +15,7 @@ class Reservation < ApplicationRecord
   validate :court_must_be_available
   validate :duration_must_be_one_hour
 
-  private 
+  private
 
   def court_must_be_available
     return if court.blank?

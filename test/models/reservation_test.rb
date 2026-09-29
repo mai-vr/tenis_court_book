@@ -5,7 +5,7 @@ class ReservationTest < ActiveSupport::TestCase
     @user = users(:one)
     @court = courts(:one)
     @payment = payments(:one)
-    
+
     @reservation = Reservation.new(
       user: @user,
       court: @court,

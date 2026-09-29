@@ -1,11 +1,10 @@
 class Api::V1::BaseController < ActionController::API
-
     include Rails.application.routes.url_helpers # Generar URLS públicas de imágenes adjuntas.
-    
+
     rescue_from ActiveRecord::RecordNotFound, with: :not_found
 
-    private 
-    
+    private
+
     def authenticate_request!
         render json: { error: "No autorizado. Token faltante o inválido." }, status: :unauthorized unless current_user
     end

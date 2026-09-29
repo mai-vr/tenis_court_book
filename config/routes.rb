@@ -1,5 +1,4 @@
 Rails.application.routes.draw do
-
   resource :session
   resources :passwords, param: :token
   get "signup", to: "user_registrations#new", as: :new_user
@@ -20,10 +19,9 @@ Rails.application.routes.draw do
 
   namespace :api do
     namespace :v1 do
-
-      post 'login', to: 'sessions#create'
-      resources :users, only: [:create]
-      delete 'logout', to: 'sessions#destroy'
+      post "login", to: "sessions#create"
+      resources :users, only: [ :create ]
+      delete "logout", to: "sessions#destroy"
 
       resources :clubs, only: %i[index show] do
         resources :courts, only: %i[index show]

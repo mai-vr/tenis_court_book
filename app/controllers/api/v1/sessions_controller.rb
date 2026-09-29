@@ -4,7 +4,7 @@ class Api::V1::SessionsController < Api::V1::BaseController
 
         if @user&.authenticate(params[:password])
           token = JsonWebToken.encode(user_id: @user.id)
-          
+
           render json: {
             token: token,
             user: {

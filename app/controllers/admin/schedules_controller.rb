@@ -1,4 +1,4 @@
-module Admin  
+module Admin
   class SchedulesController < ApplicationController
     before_action :set_club
 

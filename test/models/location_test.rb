@@ -17,7 +17,7 @@ class LocationTest < ActiveSupport::TestCase
     test "no permite duplicar exactamente la misma dirección (calle, número y ciudad)" do
       existing = locations(:one)
       duplicate = Location.new(street: existing.street, number: existing.number, city: existing.city)
-      
+
       refute duplicate.valid?
       assert_includes duplicate.errors[:street], "ya existe con ese número y ciudad"
     end
@@ -27,5 +27,4 @@ class LocationTest < ActiveSupport::TestCase
     refute @location.valid?
     assert_includes @location.errors[:number], "must be greater than 0"
   end
-
 end

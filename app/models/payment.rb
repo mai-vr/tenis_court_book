@@ -5,15 +5,15 @@ class Payment < ApplicationRecord
       { id: "cash", label: "Efectivo" },
       { id: "qr", label: "QR" },
       { id: "mercado_pago", label: "Mercado Pago" }
-      ]   
-      enum :status, {not_paid: 0, in_process: 1, paid: 2}, prefix: true
-      
-      validates :payment_method, presence: true, inclusion: { in: AVAILABLE_METHODS.map { |method| method[:id] }, message: "no es un método de pago válido" }      
-      validates :status, presence: true, inclusion: {in: statuses.keys}
-      validates :total, presence: true, numericality: { greater_than: 0 }
-      validates :already_payed, presence: true, comparison: {less_than_or_equal_to: :total, message: "no puede ser mayor que el monto total"}, if: -> {total.present? && already_payed.present?}
+      ]
+      enum :status, { not_paid: 0, in_process: 1, paid: 2 }, prefix: true
 
-      validate :status_matches_already_payed, if: -> {total.present? && already_payed.present? && status.present?}
+      validates :payment_method, presence: true, inclusion: { in: AVAILABLE_METHODS.map { |method| method[:id] }, message: "no es un método de pago válido" }
+      validates :status, presence: true, inclusion: { in: statuses.keys }
+      validates :total, presence: true, numericality: { greater_than: 0 }
+      validates :already_payed, presence: true, comparison: { less_than_or_equal_to: :total, message: "no puede ser mayor que el monto total" }, if: -> { total.present? && already_payed.present? }
+
+      validate :status_matches_already_payed, if: -> { total.present? && already_payed.present? && status.present? }
 
       private
       def status_matches_already_payed
@@ -23,5 +23,4 @@ class Payment < ApplicationRecord
                   errors.add(:already_payed, "If status is not paid, there must be an amount already paid")
             end
       end
-
 end

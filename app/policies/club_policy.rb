@@ -1,10 +1,10 @@
 class ClubPolicy < ApplicationPolicy
   def index?
-    true 
+    true
   end
 
   def show?
-    true 
+    true
   end
 
   def create?
@@ -26,11 +26,11 @@ class ClubPolicy < ApplicationPolicy
   class Scope < Scope # Dependiendo del rol, los accesos que tendrá el usuario.
     def resolve
       if user&.superadmin?
-        scope.all 
+        scope.all
       elsif user&.club_admin?
         scope.where(id: user.club_id) # El slub_admin solo ve su propio club.
       else
-        scope.none 
+        scope.none
       end
     end
   end

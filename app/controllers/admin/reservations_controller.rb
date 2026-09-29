@@ -1,4 +1,4 @@
-module Admin  
+module Admin
   class ReservationsController < ApplicationController
     before_action :set_club
 
@@ -9,7 +9,7 @@ module Admin
 
     def new
       @reservation = @club.reservations.build(reservation_params)
-      
+
       @available_courts = fetch_available_courts
 
       authorize @reservation
@@ -17,7 +17,7 @@ module Admin
 
       def create
           @reservation = @club.reservations.build(formatted_reservation_params)
-          
+
           @reservation.user = current_user
           @reservation.status = :pending
           # @reservation = current_user.reservations.build(reservation_params)
@@ -95,7 +95,6 @@ module Admin
           court.reservations.where(current_date: @reservation.current_date)
                           .where.not(status: :cancelled)
                           .any? do |existing_res|
-            
             exist_start = existing_res.start_time.strftime("%H:%M")
             exist_end   = existing_res.end_time.strftime("%H:%M")
 

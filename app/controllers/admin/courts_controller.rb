@@ -20,7 +20,7 @@ module Admin
             @court = @club ? @club.courts.new(court_params.except(:club_id)) : Court.new(court_params)
             authorize @court
 
-            if @court.save 
+            if @court.save
                 redirect_to admin_club_court_path(@club || @court.club, @court)
             else
                 @clubs = Club.all unless @club
@@ -59,7 +59,7 @@ module Admin
         end
 
         def court_params
-            params.expect(court: [:club_id, :material, :status, :indoor, :description, :price_per_hour])
+            params.expect(court: [ :club_id, :material, :status, :indoor, :description, :price_per_hour ])
         end
     end
 end

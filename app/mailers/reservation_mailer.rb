@@ -1,9 +1,9 @@
 class ReservationMailer < ApplicationMailer
-  # Subject can be set in your I18n file at config/locales/en.yml
-  # with the following lookup:
-  #
-  #   en.reservation_mailer.confirmation_email.subject
-  #
+    # Subject can be set in your I18n file at config/locales/en.yml
+    # with the following lookup:
+    #
+    #   en.reservation_mailer.confirmation_email.subject
+    #
 
     default from: "tenic-court@books.com"
 
@@ -18,5 +18,4 @@ class ReservationMailer < ApplicationMailer
         subject: "Confirmacion de la reserva - {@club.name}"
       )
     end
-
 end

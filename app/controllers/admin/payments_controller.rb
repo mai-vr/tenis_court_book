@@ -1,4 +1,4 @@
-module Admin  
+module Admin
   class PaymentsController < ApplicationController
     before_action :set_club
     before_action :set_reservation
@@ -8,7 +8,7 @@ module Admin
     end
 
     def create
-      @payment = Payment.new(payment_params)  
+      @payment = Payment.new(payment_params)
       @payment.total = @reservation.court.price_per_hour
       @payment.already_payed = 0
       @payment.status = :not_paid
@@ -22,7 +22,7 @@ module Admin
     end
 
     private
-    
+
     def set_club
       @club = Club.find(params[:club_id])
     end

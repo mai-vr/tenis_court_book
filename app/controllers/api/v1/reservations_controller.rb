@@ -26,7 +26,7 @@ class Api::V1::ReservationsController < Api::V1::BaseController
             ReservationMailer.confirmation_email(@reservation).deliver_later
             render json: {
               message: "Reserva realizada con éxito.",
-              reservation: @reservation.as_json(include: [:court, :payment])
+              reservation: @reservation.as_json(include: [ :court, :payment ])
             }, status: :created
           else
             raise ActiveRecord::Rollback
@@ -70,5 +70,4 @@ class Api::V1::ReservationsController < Api::V1::BaseController
 
         Time.zone.parse("#{date} #{time_value}")
       end
-    end
-
+end
