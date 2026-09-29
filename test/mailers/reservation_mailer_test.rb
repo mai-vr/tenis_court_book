@@ -1,11 +1,13 @@
 require "test_helper"
 
 class ReservationMailerTest < ActionMailer::TestCase
-  test "confirmation_email" do
-    mail = ReservationMailer.confirmation_email
-    assert_equal "Confirmation email", mail.subject
-    assert_equal [ "to@example.org" ], mail.to
-    assert_equal [ "from@example.com" ], mail.from
-    assert_match "Hi", mail.body.encoded
+test "confirmation_email" do
+  reservation = reservations(:one)
+  email = ReservationMailer.confirmation_email(reservation)
+  
+  assert_emails 1 do
+    email.deliver_now
   end
+  assert_equal [reservation.user.email_address], email.to
+end
 end

@@ -1,13 +1,11 @@
-# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
-
 one:
-  total: 9.99
-  already_payed: 9.99
-  payment_method: MyString
+  total: 10000.0
+  already_payed: 10000.0
+  payment_method: "mercado_pago"
   status: 1
 
 two:
-  total: 9.99
-  already_payed: 9.99
-  payment_method: MyString
-  status: 1
+  total: 12000.0
+  already_payed: 0.0
+  payment_method: "cash"
+  status: 0

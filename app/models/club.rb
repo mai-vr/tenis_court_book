@@ -8,7 +8,7 @@ class Club < ApplicationRecord
   has_one_attached :logo # Active storage.
 
   validates :name, presence: true, uniqueness: {case_sensitive: false}, length: {in: 2..25}
-  validates :phone, presence: true, uniqueness: true, length: {in: 10..15}, format: { with: /\A\+?[0-9]+\z/, message: "Letters are invalid as a phone number"}
+  validates :phone, presence: true, uniqueness: true, length: {in: 10..15}, format: { with: /\A\+?[0-9]+\z/, message: "solo debe contener números (opcionalmente con prefijo +)"}
   validates :description, presence: true, length: {maximum: 150}
   validates :email, presence: true, uniqueness: {case_sensitive: false}, format: {with: URI::MailTo::EMAIL_REGEXP, message: "It must be a valid email address"}, allow_blank: true
   # 'URI::MailTo::EMAIL_REGEXP' - expresión regular nativa de Ruby para validar correos.

@@ -11,10 +11,11 @@ module Admin
       @payment = Payment.new(payment_params)  
       @payment.total = @reservation.court.price_per_hour
       @payment.already_payed = 0
+      @payment.status = :not_paid
 
       if @payment.save
-        @reservation.update!(payment: @payment, status: :confirmed)
-        redirect_to club_reservation_path(@club, @reservation), notice: "Payment created successfully"
+        @reservation.update_columns(payment_id: @payment.id, status: :confirmed)
+        redirect_to admin_club_reservation_path(@club, @reservation), notice: "Payment created successfully"
       else
         render :new, status: :unprocessable_entity
       end

@@ -1,7 +1,14 @@
 require "test_helper"
 
 class SessionsControllerTest < ActionDispatch::IntegrationTest
-  setup { @user = User.take }
+  setup do
+  @user = User.create!(
+    email_address: "margot@gmail.com",
+    first_name: "Margot",
+    last_name: "Diaz",
+    password: "pepe123"
+  )
+end
 
   test "new" do
     get new_session_path
@@ -9,7 +16,7 @@ class SessionsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "create with valid credentials" do
-    post session_path, params: { email_address: @user.email_address, password: "password" }
+    post session_path, params: { email_address: @user.email_address, password: "pepe123" }
 
     assert_redirected_to root_path
     assert cookies[:session_id]
@@ -23,7 +30,7 @@ class SessionsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "destroy" do
-    sign_in_as(User.take)
+    sign_in_as(@user)
 
     delete session_path
 

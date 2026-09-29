@@ -1,17 +1,15 @@
-# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
-
 one:
-  material: MyString
-  status: 1
-  indoor: false
-  description: MyText
-  price_per_hour: 9.99
   club: one
+  description: "Cancha N1 tenis"
+  indoor: true
+  material: "Sintetico"
+  price_per_hour: 10000.0
+  status: 0
 
 two:
-  material: MyString
-  status: 1
-  indoor: false
-  description: MyText
-  price_per_hour: 9.99
   club: two
+  description: "Cancha N2 TT"
+  indoor: false
+  material: "Polvo de ladrillo"
+  price_per_hour: 12000.0
+  status: 0

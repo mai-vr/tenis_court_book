@@ -27,6 +27,6 @@ class Admin::UsersController < ApplicationController
   end
 
   def user_params
-    params.expect(user: %i[email_address password password_confirmation])
+    params.expect(user: %i[first_name last_name email_address password password_confirmation, club_id])
   end
 end

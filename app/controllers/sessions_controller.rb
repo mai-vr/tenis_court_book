@@ -14,7 +14,7 @@ class SessionsController < ApplicationController
       elsif user.backoffice?
         redirect_to admin_clubs_path
       else
-        redirect to root_path
+        redirect_to root_path
       end
     
     else

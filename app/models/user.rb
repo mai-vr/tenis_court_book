@@ -13,7 +13,7 @@ class User < ApplicationRecord
   validates :password, length: {minimum: 4}
   validates :role, presence: true, inclusion: {in: roles.keys}
 
-  validates :club, presence: {message: "club admins must have a club asociated"}, if: :club_admin?
+  validates :club, presence: {message: "es obligatorio para administradores de club"}, if: :club_admin?
   validate :no_club_regular_user, if: :user?
 
   def backoffice?

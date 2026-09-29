@@ -1,13 +1,11 @@
-# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
-
 one:
-  day_week: saturday
-  start_time: 09:00:00
-  end_time: 18:00:00
   club: one
+  day_week: 1
+  start_time: <%= Time.zone.parse("08:00") %>
+  end_time: <%= Time.zone.parse("23:00") %>
 
 two:
-  day_week: saturday
-  start_time: 09:00:00
-  end_time: 18:00:00
   club: two
+  day_week: 2
+  start_time: <%= Time.zone.parse("08:00") %>
+  end_time: <%= Time.zone.parse("23:00") %>
