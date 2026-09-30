@@ -1,33 +1,33 @@
-<div>
-  <div>
-    <h1>Gestión de Usuarios</h1>
-    <%= link_to "Registrar Nuevo Club Admin", new_admin_user_path%>
+<div class="users-management-container">
+  <div class="users-management-header">
+    <h1 class="users-management-title">Gestión de Usuarios</h1>
+    <%= link_to "Registrar Nuevo Club Admin", new_admin_user_path, class: "btn-new-user" %>
   </div>
 
-  <table>
-    <thead>
-      <tr>
-        <th>Email</th>
-        <th>Rol</th>
-        <th>Estado del Club</th>
+  <table class="users-table">
+    <thead class="users-table-head">
+      <tr class="users-table-header-row">
+        <th class="users-table-th">Email</th>
+        <th class="users-table-th">Rol</th>
+        <th class="users-table-th">Estado del Club</th>
       </tr>
     </thead>
-    <tbody>
+    <tbody class="users-table-body">
       <% @users.each do |user| %>
-        <tr>
-          <td><%= user.email_address %></td>
-          <td>
+        <tr class="users-table-row">
+          <td class="users-table-td users-table-td-email"><%= user.email_address %></td>
+          <td class="users-table-td users-table-td-role">
             <%= user.role.humanize %>
           </td>
-          <td>
+          <td class="users-table-td users-table-td-status">
             <% if user.club_admin? %>
               <% if user.club.present? %>
-                <span><%= user.club.name %></span>
+                <span class="club-status-assigned"><%= user.club.name %></span>
               <% else %>
-                <span>Pendiente de cargar club</span>
+                <span class="club-status-pending">Pendiente de cargar club</span>
               <% end %>
             <% else %>
-              <span>Sin club</span>
+              <span class="club-status-none">Sin club</span>
             <% end %>
           </td>
         </tr>

@@ -1,30 +1,30 @@
-<section>
-    <h1>
-        Courts
-    </h1>
-    <% if policy(Court).new?%>
-        <%= link_to "New court", new_admin_club_court_path(params[:club_id]) %>
-    <%end%>
-    <div>
-        <% @courts.each do |c| %>
-            <div>
-                <h4>
-                    <%= link_to c.club.name, admin_club_court_path(c.club, c) %>
-                </h4>
-                <>
-                    <%= c.material %>
-                </p>
-                <p>
-                    <% if c.indoor %>
-                        Indoor
-                    <%else%>
-                        Outdoor
-                    <%end%>
-                </p>
-                <p>
-                    $ <%= c.price_per_hour %> per hour
-                </p>
-            </div>
-        <% end %>
-    </div>
+<section class="courts-section">
+  <h1 class="courts-title">
+    Courts
+  </h1>
+  <% if policy(Court).new? %>
+    <%= link_to "New court", new_admin_club_court_path(params[:club_id]), class: "btn-new-court" %>
+  <% end %>
+  <div class="courts-list">
+    <% @courts.each do |c| %>
+      <div class="court-card">
+        <h4 class="court-title">
+          <%= link_to c.club.name, admin_club_court_path(c.club, c), class: "court-title-link" %>
+        </h4>
+        <p class="court-material">
+          <%= c.material %>
+        </p>
+        <p class="court-environment">
+          <% if c.indoor %>
+            Indoor
+          <% else %>
+            Outdoor
+          <% end %>
+        </p>
+        <p class="court-price">
+          $ <%= c.price_per_hour %> per hour
+        </p>
+      </div>
+    <% end %>
+  </div>
 </section>

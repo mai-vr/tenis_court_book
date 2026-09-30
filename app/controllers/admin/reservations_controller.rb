@@ -25,7 +25,7 @@ module Admin
           authorize @reservation
 
           if @reservation.save
-            redirect_to new_club_reservation_payment_path(@club, @reservation), notice: "Reserva realizada exitosamente."
+            redirect_to new_admin_club_reservation_payment_path(@club, @reservation), notice: "Reserva realizada exitosamente."
           else
             @available_courts = fetch_available_courts
             render :new, status: :unprocessable_entity

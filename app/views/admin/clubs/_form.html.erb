@@ -1,45 +1,44 @@
-<%= form_with model: [:admin, club] do |form| %>
+<%= form_with model: [:admin, club], class: "form-club" do |form| %>
   <% if club.errors.any? || location.errors.any? %>
-    <ul>
+    <ul class="form-club-errors-list">
       <% club.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
+        <li class="form-club-error-item"><%= message %></li>
       <% end %>
       <% location.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
+        <li class="form-club-error-item"><%= message %></li>
       <% end %>
     </ul>
   <% end %>
 
+  <h3 class="form-club-section-title">Club</h3>
   
-    <h3>Club</h3>
-    <%= form.label :name %>
-    <%= form.text_field :name, required: true %>
+  <%= form.label :name, class: "form-club-label" %>
+  <%= form.text_field :name, required: true, class: "form-club-input form-club-input-text" %>
 
-    <%= form.label :phone %>
-    <%= form.telephone_field :phone, required: true %>
+  <%= form.label :phone, class: "form-club-label" %>
+  <%= form.telephone_field :phone, required: true, class: "form-club-input form-club-input-tel" %>
 
-    <%= form.label :email %>
-    <%= form.email_field :email %>
+  <%= form.label :email, class: "form-club-label" %>
+  <%= form.email_field :email, class: "form-club-input form-club-input-email" %>
 
-    <%= form.label :description %>
-    <%= form.text_area :description %>
+  <%= form.label :description, class: "form-club-label" %>
+  <%= form.text_area :description, class: "form-club-textarea" %>
 
-    <%= form.label :logo, "Logo del Club" %>
-    <%= form.file_field :logo, accept: "image/png, image/jpeg, image/jpg" %>
+  <%= form.label :logo, "Logo del Club", class: "form-club-label" %>
+  <%= form.file_field :logo, accept: "image/png, image/jpeg, image/jpg", class: "form-club-input form-club-input-file" %>
 
-    <h3>Location</h3>
-    <%= fields_for :location, location do |location_form| %>
-      <%= location_form.label :street %>
-      <%= location_form.text_field :street, required: true %>
-
-      <%= location_form.label :number %>
-      <%= location_form.number_field :number, min: 1, required: true %>
-
-      <%= location_form.label :city %>
-      <%= location_form.text_field :city, required: true %>
-    <% end %>
+  <h3 class="form-club-section-title">Location</h3>
   
+  <%= fields_for :location, location do |location_form| %>
+    <%= location_form.label :street, class: "form-club-label" %>
+    <%= location_form.text_field :street, required: true, class: "form-club-input form-club-input-text" %>
 
-  <%= form.submit "Guardar" %>
+    <%= location_form.label :number, class: "form-club-label" %>
+    <%= location_form.number_field :number, min: 1, required: true, class: "form-club-input form-club-input-number" %>
 
+    <%= location_form.label :city, class: "form-club-label" %>
+    <%= location_form.text_field :city, required: true, class: "form-club-input form-club-input-text" %>
+  <% end %>
+
+  <%= form.submit "Guardar", class: "form-club-submit-btn" %>
 <% end %>

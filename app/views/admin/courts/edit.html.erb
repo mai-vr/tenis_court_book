@@ -1,7 +1,7 @@
-<section>
-    <h3>
-        Edit court
-    </h3>
-    <%= render "form", court: @court %>
-    <%= link_to "Cancel", admin_club_court_path(@court.club, @court) %>
+<section class="edit-court-section">
+  <h3 class="edit-court-title">
+    Edit court
+  </h3>
+  <%= render "form", court: @court %>
+  <%= link_to "Cancel", admin_club_court_path(@court.club, @court), class: "btn-cancel" %>
 </section>

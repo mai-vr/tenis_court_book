@@ -8,3 +8,68 @@
  *
  * Consider organizing styles into separate files for maintainability.
  */
+/* =========================================================
+   application.css — base global
+   Todo el sistema de medidas se basa en rem: el tamaño raíz
+   escala con el ancho de pantalla (clamp) y el resto se adapta.
+   ========================================================= */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+  font-size: clamp(0.875rem, 0.8rem + 0.35vw, 1.125rem);
+}
+
+:root {
+  /* Color */
+  --court:   #17494D;
+  --court-dark: #0F3336;
+  --ball:    #D9F04A;
+  --ink:     #12262A;
+  --muted:   #566A6D;
+  --surface: #EEF3F1;
+  --paper:   #FFFFFF;
+  --line:    #CBD8D5;
+  --danger:  #A32620;
+  --danger-bg: #FBECEA;
+
+  --font-display: "Bricolage Grotesque", "Trebuchet MS", sans-serif;
+  --font-body: "Figtree", system-ui, sans-serif;
+
+  --space-1: 0.5rem;
+  --space-2: 1rem;
+  --space-3: 1.5rem;
+  --space-4: 2.5rem;
+  --space-5: 4rem;
+
+  --radius: 0.375rem;
+  --border: 0.0625rem solid var(--line);
+}
+
+body {
+  margin: 0;
+  background: var(--surface);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+h1, h2, h3, p, ul { margin: 0; }
+ul { padding: 0; list-style: none; }
+img { display: block; max-width: 100%; }
+
+h1, h2, h3 {
+  font-family: var(--font-display);
+  line-height: 1.15;
+}
+
+h1 { font-size: 2.25rem; font-weight: 800; }
+h2 { font-size: 1.5rem;  font-weight: 700; }
+h3 { font-size: 1.125rem; font-weight: 700; }
+
+a { color: var(--court); }
+

@@ -1,5 +1,5 @@
-<section>
-  <h1>Editar club</h1>
+<section class="edit-club">
+  <h1 class="edit-club-title">Editar club</h1>
   <%= render "form", club: @club, location: @location %>
-  <%= link_to "Cancel", admin_club_path(@club) %>
+  <%= link_to "Cancel", admin_club_path(@club), class: "cancel-btn" %>
 </section>

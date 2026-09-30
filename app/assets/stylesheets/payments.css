@@ -1,0 +1,114 @@
+.payment-section {
+  max-width: 40rem;
+  margin: 0 auto;
+  padding: var(--space-4) var(--space-2) var(--space-5);
+  display: grid;
+  gap: var(--space-3);
+}
+
+.payment-title {
+  font-size: 2.25rem;
+  font-weight: 800;
+}
+
+.reservation-summary {
+  padding: var(--space-1) var(--space-3);
+  background: var(--paper);
+  border: var(--border);
+  border-radius: var(--radius);
+}
+
+.reservation-summary .summary-item {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: var(--space-1);
+  padding: var(--space-1) 0;
+}
+
+.reservation-summary .summary-item + .summary-item { border-top: var(--border); }
+
+.reservation-summary .summary-label { color: var(--muted); }
+
+.reservation-summary .summary-item:last-child {
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: var(--court);
+}
+
+.reservation-summary .summary-item:last-child .summary-label { color: var(--ink); }
+
+.form-payment {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  padding: var(--space-3);
+  background: var(--paper);
+  border: var(--border);
+  border-top: 0.3rem solid var(--court);
+  border-radius: var(--radius);
+}
+
+.form-payment .form-field-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.form-payment .form-label {
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.form-payment .form-control {
+  width: 100%;
+  padding: 0.6rem 0.8rem;
+  border: 0.0625rem solid var(--muted);
+  border-radius: var(--radius);
+  background: var(--paper);
+  color: var(--ink);
+  font: inherit;
+}
+
+.form-payment .form-control:focus {
+  outline: none;
+  border-color: var(--court);
+  box-shadow: 0 0 0 0.1875rem rgba(23, 73, 77, 0.25);
+}
+
+.form-payment .form-actions { margin-top: var(--space-2); }
+
+.btn-confirm-payment {
+  display: inline-block;
+  width: 100%;
+  padding: 0.75rem 1.2rem;
+  border: 0;
+  border-radius: var(--radius);
+  background: var(--court);
+  color: var(--paper);
+  font: 600 1rem/1.2 var(--font-body);
+  cursor: pointer;
+}
+
+.btn-confirm-payment:hover { background: var(--court-dark); }
+
+.payment-errors {
+  margin-bottom: var(--space-1);
+  padding: var(--space-1) var(--space-2);
+  background: var(--danger-bg);
+  border-left: 0.3rem solid var(--danger);
+  border-radius: var(--radius);
+  color: var(--danger);
+}
+
+.payment-errors-title {
+  margin-bottom: var(--space-1);
+  font-size: 1rem;
+}
+
+.payment-error-item {
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.payment-error-item + .payment-error-item { margin-top: 0.25rem; }

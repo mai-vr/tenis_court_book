@@ -1,19 +1,19 @@
-<h1>Reservar en <%= @club.name %></h1>
+<section class="new-reservation-section">
+  <h1 class="new-reservation-title">Reservar en <%= @club.name %></h1>
 
-<%= form_with(model: [:admin, @club, @reservation], url: admin_club_reservations_path(@club), method: :post) do |f| %>
-  <%= f.hidden_field :current_date %>
-  <%= f.hidden_field :start_time %>
-  <%= f.hidden_field :end_time %>
+  <%= form_with(model: [:admin, @club, @reservation], url: admin_club_reservations_path(@club), method: :post, class: "form-reservation") do |f| %>
+    <%= f.hidden_field :current_date %>
+    <%= f.hidden_field :start_time %>
+    <%= f.hidden_field :end_time %>
 
-  <p><strong>Fecha:</strong> <%= l(@reservation.current_date, format: :long) %></p>
-  <p><strong>Horario:</strong> <%= @reservation.start_time.strftime("%H:%M") %> - <%= @reservation.end_time.strftime("%H:%M") %></p>
+    <p class="form-reservation-info"><strong>Fecha:</strong> <%= l(@reservation.current_date, format: :long) %></p>
+    <p class="form-reservation-info"><strong>Horario:</strong> <%= @reservation.start_time.strftime("%H:%M") %> - <%= @reservation.end_time.strftime("%H:%M") %></p>
 
-  <div class="field">
-    <%= f.label :court_id, "Seleccionar Cancha Libre" %>
-    <%= f.collection_select :court_id, @available_courts, :id, :description, prompt: "Elige una cancha" %>
-  </div>
+    <%= f.label :court_id, "Seleccionar cancha libre", class: "form-reservation-label" %>
+    <%= f.collection_select :court_id, @available_courts, :id, :description, { prompt: "Elige una cancha" }, { class: "form-reservation-select" } %>
 
-  <div class="actions">
-    <%= f.submit "Confirmar Reserva" %>
-  </div>
-<% end %>
+    <%= f.submit "Confirmar reserva", class: "form-reservation-submit-btn" %>
+  <% end %>
+
+  <%= link_to "Cancelar", admin_club_path(@club), class: "btn-cancel" %>
+</section>

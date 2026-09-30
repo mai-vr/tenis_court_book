@@ -1,0 +1,101 @@
+.new-reservation-section,
+.reservation-show-section {
+  max-width: 40rem;
+  margin: 0 auto;
+  padding: var(--space-4) var(--space-2) var(--space-5);
+}
+
+.new-reservation-title,
+.reservation-show-title {
+  margin-bottom: var(--space-3);
+  font-size: 2.25rem;
+  font-weight: 800;
+}
+
+.form-reservation,
+.reservation-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  padding: var(--space-3);
+  background: var(--paper);
+  border: var(--border);
+  border-top: 0.3rem solid var(--court);
+  border-radius: var(--radius);
+}
+
+.form-reservation-info {
+  padding: var(--space-1) var(--space-2);
+  background: var(--surface);
+  border-radius: var(--radius);
+}
+
+.form-reservation-label {
+  margin-top: var(--space-1);
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.form-reservation-select {
+  width: 100%;
+  padding: 0.6rem 0.8rem;
+  border: 0.0625rem solid var(--muted);
+  border-radius: var(--radius);
+  background: var(--paper);
+  color: var(--ink);
+  font: inherit;
+}
+
+.form-reservation-select:focus {
+  outline: none;
+  border-color: var(--court);
+  box-shadow: 0 0 0 0.1875rem rgba(23, 73, 77, 0.25);
+}
+
+.form-reservation-submit-btn {
+  display: inline-block;
+  width: 100%;
+  margin-top: var(--space-3);
+  padding: 0.6rem 1.2rem;
+  border: 0;
+  border-radius: var(--radius);
+  background: var(--court);
+  color: var(--paper);
+  font: 600 1rem/1.2 var(--font-body);
+  cursor: pointer;
+}
+
+.form-reservation-submit-btn:hover { background: var(--court-dark); }
+
+.reservation-detail {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: var(--space-1);
+  padding: var(--space-1) 0;
+}
+
+.reservation-detail + .reservation-detail { border-top: var(--border); }
+
+.reservation-detail-label { color: var(--muted); }
+
+.reservation-status {
+  padding: 0 0.75rem;
+  background: var(--ball);
+  border-radius: 62rem;
+  color: var(--ink);
+  font-weight: 700;
+}
+
+.reservation-payment {
+  margin-top: var(--space-1);
+  padding-top: var(--space-1);
+  border-top: 0.125rem solid var(--court);
+}
+
+.reservation-payment .reservation-detail-total {
+  color: var(--court);
+  font-weight: 700;
+}
+
+.reservation-show-section > .btn-back { margin-top: var(--space-3); }

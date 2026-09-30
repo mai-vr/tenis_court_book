@@ -1,78 +1,85 @@
-<section>
-  <%= link_to "Volver", admin_clubs_path %>
+<section class="club-details-section">
+  <%= link_to "Volver", admin_clubs_path, class: "btn-back" %>
 
-  <div>
+  <div class="club-header">
     <% if @club.logo.attached? %>
-      <%= image_tag @club.logo,  alt:"Logo del club"%>
+      <%= image_tag @club.logo, alt: "Logo del club", class: "club-logo" %>
     <% else %>
-      <%= image_tag "default_logo.jpg", alt: "Sin logo" %>
+      <%= image_tag "default_logo.jpg", alt: "Sin logo", class: "club-logo club-logo-default" %>
     <% end %>
-    <h1><%= @club.name %></h1>
-    <p><%= @club.description %></p>
-    <p><%= @club.location.street %> <%= @club.location.number %>, <%= @club.location.city %></p>
-    <p><%= @club.phone %> <% if @club.email.present? %>· <%= @club.email %><% end %></p>
+
+    <h1 class="club-title"><%= @club.name %></h1>
+    <p class="club-description"><%= @club.description %></p>
+    <p class="club-address"><%= @club.location.street %> <%= @club.location.number %>, <%= @club.location.city %></p>
+    <p class="club-contact">
+      <%= @club.phone %> <% if @club.email.present? %>· <%= @club.email %><% end %>
+    </p>
 
     <% if policy(@club).edit? %>
-      <p>
-        <%= link_to "Editar club", edit_admin_club_path(@club) %>
+      <p class="club-actions">
+        <%= link_to "Editar club", edit_admin_club_path(@club), class: "btn-edit-club" %>
       </p>
     <% end %>
   </div>
 
-  <h2>Horarios del Club</h2>
+  <h2 class="section-title">Horarios del Club</h2>
   <% if policy(Schedule).new? %>
-    <%= link_to "Agregar horarios", new_admin_club_schedule_path(@club) %>
+    <%= link_to "Agregar horarios", new_admin_club_schedule_path(@club), class: "btn-add-schedule" %>
   <% end %>
 
   <% if @schedules.any? %>
-    <ul>
+    <ul class="schedules-list">
       <% @schedules.each do |schedule| %>
-        <li><%= schedule.day_week.humanize %>: <%= schedule.start_time.strftime("%H:%M") %> - <%= schedule.end_time.strftime("%H:%M") %></li>
+        <li class="schedule-item">
+          <%= schedule.day_week.humanize %>: <%= schedule.start_time.strftime("%H:%M") %> - <%= schedule.end_time.strftime("%H:%M") %>
+        </li>
       <% end %>
     </ul>
   <% else %>
-    <p>No hay horarios cargados.</p>
+    <p class="empty-state-text">No hay horarios cargados.</p>
   <% end %>
 
-  <hr>
+  <hr class="section-divider">
 
-  <h2>Canchas</h2>
+  <h2 class="section-title">Canchas</h2>
   <% if policy(Court).new? %>
-    <%= link_to "Agregar cancha", new_admin_club_court_path(@club) %>
+    <%= link_to "Agregar cancha", new_admin_club_court_path(@club), class: "btn-add-court" %>
   <% end %>
 
   <% if @club.courts.any? %>
-    <ul>
+    <ul class="courts-list">
       <% @club.courts.each do |court| %>
-        <li>
-          <strong><%= court.description %></strong> — 
-          $<%= court.price_per_hour %>/hs | 
-          <%= court.material %> | 
-          <%= court.indoor? ? "Cubierta (Indoor)" : "Descubierta" %> | 
+        <li class="court-item">
+          <strong class="court-name"><%= court.description %></strong> — 
+          <span class="court-price">$<%= court.price_per_hour %>/hs</span> | 
+          <span class="court-surface"><%= court.material %></span> | 
+          <span class="court-type"><%= court.indoor? ? "Cubierta (Indoor)" : "Descubierta" %></span> | 
           
           <%# Si tenés un show/edit de court %>
           <% if policy(court).show? %>
-            · <%= link_to "Ver cancha", admin_club_court_path(@club, court) %>
+            · <%= link_to "Ver cancha", admin_club_court_path(@club, court), class: "court-link" %>
           <% end %>
         </li>
       <% end %>
     </ul>
   <% else %>
-    <p>No hay canchas registradas en este club.</p>
+    <p class="empty-state-text">No hay canchas registradas en este club.</p>
   <% end %>
 
-  <hr>
+  <hr class="section-divider">
 
-  <h2>Reservar una cancha</h2>
+  <h2 class="section-title">Reservar una cancha</h2>
   <% if @booking_slots.any? %>
-    <ul>
+    <ul class="booking-dates-list">
       <% @booking_slots.group_by { |slot| slot[:date] }.sort_by { |date, _| date }.each do |date, slots| %>
-        <li>
-          <strong><%= l(date, format: :long) %></strong>
-          <ul>
+        <li class="booking-date-group">
+          <strong class="booking-date"><%= l(date, format: :long) %></strong>
+          <ul class="booking-slots-list">
             <% slots.each do |slot| %>
-              <li>
-                <%= slot[:start_time].strftime("%H:%M") %> - <%= slot[:end_time].strftime("%H:%M") %>
+              <li class="booking-slot-item">
+                <span class="booking-slot-time">
+                  <%= slot[:start_time].strftime("%H:%M") %> - <%= slot[:end_time].strftime("%H:%M") %>
+                </span>
                 
                 <% if slot[:available] %>
                   <%= link_to "Reservar", new_admin_club_reservation_path(
@@ -82,10 +89,10 @@
                       start_time: slot[:start_time].strftime("%H:%M"),
                       end_time: slot[:end_time].strftime("%H:%M")
                     }
-                  ) %>
-                  <small>(Canchas disponibles: <%= slot[:available_courts].count %>)</small>
+                  ), class: "btn-reserve-slot" %>
+                  <small class="available-courts-count">(Canchas disponibles: <%= slot[:available_courts].count %>)</small>
                 <% else %>
-                  <span>No disponible</span>
+                  <span class="slot-unavailable">No disponible</span>
                 <% end %>
               </li>
             <% end %>
@@ -94,6 +101,6 @@
       <% end %>
     </ul>
   <% else %>
-    <p>No hay bloques disponibles para reservar.</p>
+    <p class="empty-state-text">No hay bloques disponibles para reservar.</p>
   <% end %>
 </section>

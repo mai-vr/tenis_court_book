@@ -1,32 +1,36 @@
-<section>
-    <%= form_with model: [:admin, @court.club || @club, court] do |form| %>   
-        <% if form.object.errors.any? %>
-            <p class="error"><%= form.object.errors.full_messages.first %></p>
-        <% end %>
-        
-        <% if @club %>
-            <%= form.hidden_field :club_id, value: @club.id %>
-            <p><strong>Club:</strong> <%= @club.name %></p>
-        <% else %>
-            <%= form.label :club_id, "Club" %>
-            <%= form.collection_select :club_id, @clubs, :id, :name, { prompt: "Select a club" } %>
-        <% end %>
-        
-        <%= form.label :material, "Material" %>
-        <%= form.text_field :material %>
-
-        <%= form.label :status, "Status" %>
-        <%= form.select :status, Court.statuses.keys.map{|m| [m.humanize, m]} %>
-
-        <%= form.label :indoor, "Is it indoor?" %>
-        <%= form.check_box :indoor %>
-
-        <%= form.label :description, "Description" %>
-        <%= form.text_field :description %>
-
-        <%= form.label :price_per_hour, "Price per hour" %>
-        <%= form.number_field :price_per_hour, min: 0.01, step: 0.01, required: true %>
-
-        <%= form.submit "Save court" %>
+<section class="court-form-section">
+  <%= form_with model: [:admin, @court.club || @club, court], class: "form-court" do |form| %>   
+    <% if form.object.errors.any? %>
+      <p class="form-court-error"><%= form.object.errors.full_messages.first %></p>
     <% end %>
+    
+    <% if @club %>
+      <%= form.hidden_field :club_id, value: @club.id %>
+      <p class="form-court-info">
+        <strong class="form-court-info-label">Club:</strong> <%= @club.name %>
+      </p>
+    <% else %>
+      <%= form.label :club_id, "Club", class: "form-court-label" %>
+      <%= form.collection_select :club_id, @clubs, :id, :name, { prompt: "Select a club" }, { class: "form-court-select" } %>
+    <% end %>
+    
+    <%= form.label :material, "Material", class: "form-court-label" %>
+    <%= form.text_field :material, class: "form-court-input form-court-input-text" %>
+
+    <%= form.label :status, "Status", class: "form-court-label" %>
+    <%= form.select :status, Court.statuses.keys.map{|m| [m.humanize, m]}, {}, { class: "form-court-select" } %>
+
+    <div class="form-court-checkbox-group">
+      <%= form.check_box :indoor, class: "form-court-checkbox" %>
+      <%= form.label :indoor, "Is it indoor?", class: "form-court-label-checkbox" %>
+    </div>
+
+    <%= form.label :description, "Description", class: "form-court-label" %>
+    <%= form.text_field :description, class: "form-court-input form-court-input-text" %>
+
+    <%= form.label :price_per_hour, "Price per hour", class: "form-court-label" %>
+    <%= form.number_field :price_per_hour, min: 0.01, step: 0.01, required: true, class: "form-court-input form-court-input-number" %>
+
+    <%= form.submit "Save court", class: "form-court-submit-btn" %>
+  <% end %>
 </section>

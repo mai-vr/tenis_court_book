@@ -1,0 +1,77 @@
+.schedule-form-section {
+  max-width: 40rem;
+  margin: 0 auto;
+  padding: var(--space-4) var(--space-2) var(--space-5);
+}
+
+.schedule-form-title {
+  margin-bottom: var(--space-3);
+  font-size: 2.25rem;
+  font-weight: 800;
+}
+
+.form-schedule {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  padding: var(--space-3);
+  background: var(--paper);
+  border: var(--border);
+  border-top: 0.3rem solid var(--court);
+  border-radius: var(--radius);
+}
+
+.form-schedule-label {
+  margin-top: var(--space-1);
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.form-schedule-input,
+.form-schedule-select {
+  width: 100%;
+  padding: 0.6rem 0.8rem;
+  border: 0.0625rem solid var(--muted);
+  border-radius: var(--radius);
+  background: var(--paper);
+  color: var(--ink);
+  font: inherit;
+}
+
+.form-schedule-input:focus,
+.form-schedule-select:focus {
+  outline: none;
+  border-color: var(--court);
+  box-shadow: 0 0 0 0.1875rem rgba(23, 73, 77, 0.25);
+}
+
+.form-schedule-submit-btn {
+  display: inline-block;
+  width: 100%;
+  margin-top: var(--space-3);
+  padding: 0.6rem 1.2rem;
+  border: 0;
+  border-radius: var(--radius);
+  background: var(--court);
+  color: var(--paper);
+  font: 600 1rem/1.2 var(--font-body);
+  cursor: pointer;
+}
+
+.form-schedule-submit-btn:hover { background: var(--court-dark); }
+
+.form-schedule .schedule-errors-list {
+  margin-bottom: var(--space-1);
+  padding: var(--space-1) var(--space-2);
+  background: var(--danger-bg);
+  border-left: 0.3rem solid var(--danger);
+  border-radius: var(--radius);
+}
+
+.schedule-error-item {
+  color: var(--danger);
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.schedule-error-item + .schedule-error-item { margin-top: 0.25rem; }
