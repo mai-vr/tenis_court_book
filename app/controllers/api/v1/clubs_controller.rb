@@ -14,7 +14,7 @@ class Api::V1::ClubsController < Api::V1::BaseController
 
         club_json = @club.as_json(include: %i[location schedules]).merge(logo_url: club_logo_url(@club))
 
-        render json: clubs_json, include: %i[location schedules], status: :ok
+        render json: club_json, include: %i[location schedules], status: :ok
       end
 
       def club_logo_url(club) # Devolver la URL del logo adjunto o la imágen por defecto.
