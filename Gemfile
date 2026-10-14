@@ -68,3 +68,6 @@ group :test do
 end
 
 gem "pundit", "~> 2.5"
+gem "rswag-api"
+gem "rswag-ui"
+gem "rswag-specs"

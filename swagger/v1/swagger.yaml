@@ -1,0 +1,113 @@
+openapi: 3.0.3
+info:
+  title: Tenis Court Book API - Backoffice
+  version: 1.0.0
+  description: Documentación oficial de la API para la gestión de clubes y reservas de canchas de tenis.
+servers:
+  - url: http://localhost:3000
+    description: Servidor de desarrollo local
+  - url: https://tenis-court-book.onrender.com
+    description: App hosteada (Producción)
+    
+paths:
+  /api/v1/login:
+    post:
+      summary: Iniciar sesión
+      description: Autentica al usuario mediante credenciales y retorna un token JWT.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+                - password
+              properties:
+                email:
+                  type: string
+                  format: email
+                  description: Correo electrónico registrado.
+                password:
+                  type: string
+                  description: Contraseña del usuario.
+      responses:
+        '200':
+          description: Autenticación exitosa. Retorna el token de acceso.
+        '401':
+          description: Credenciales inválidas.
+
+  /api/v1/clubs:
+    get:
+      summary: Listar clubes
+      description: Retorna un listado de todos los clubes disponibles en el sistema.
+      responses:
+        '200':
+          description: Lista de clubes obtenida exitosamente.
+
+  /api/v1/clubs/{club_id}/courts:
+    get:
+      summary: Listar canchas de un club
+      description: Obtiene todas las canchas habilitadas para un club específico.
+      parameters:
+        - in: path
+          name: club_id
+          required: true
+          schema:
+            type: integer
+          description: ID único del club.
+      responses:
+        '200':
+          description: Listado de canchas devuelto correctamente.
+        '404':
+          description: Club no encontrado.
+
+  /api/v1/clubs/{club_id}/reservations:
+    post:
+      summary: Crear una reserva
+      description: Permite registrar una nueva reserva de cancha para un club.
+      security:
+        - BearerAuth: []
+      parameters:
+        - in: path
+          name: club_id
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - court_id
+                - start_time
+                - end_time
+              properties:
+                court_id:
+                  type: integer
+                  description: ID de la cancha que se desea reservar.
+                start_time:
+                  type: string
+                  format: date-time
+                  description: Fecha y hora de inicio de la reserva (ej. 2026-10-15T10:00:00Z).
+                end_time:
+                  type: string
+                  format: date-time
+                  description: Fecha y hora de finalización.
+      responses:
+        '201':
+          description: Reserva creada exitosamente.
+        '401':
+          description: No autorizado (Falta el token Bearer o es inválido).
+        '422':
+          description: Error de validación (ej. solapamiento de horarios o campos requeridos faltantes).
+
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: Ingresa tu token JWT con el formato Bearer <token>
