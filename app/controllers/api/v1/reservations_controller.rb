@@ -1,6 +1,20 @@
 class Api::V1::ReservationsController < Api::V1::BaseController
     before_action :set_club
     before_action :authenticate_request!
+
+    def index
+      reservations = @club.reservations.select(
+        :id,
+        :court_id,
+        :current_date,
+        :start_time,
+        :end_time,
+        :status
+      )
+
+      render json: reservations
+    end
+    
       def create
         @court = @club.courts.find_by(id: reservation_params[:court_id])
 
