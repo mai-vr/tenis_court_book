@@ -49,3 +49,75 @@ Club.find_or_create_by!(name: "La Plata Tennis") do |club|
   club.description = "Club histórico en el centro de La Plata."
   club.email = "info@laplatatennis.com"
 end
+
+Court.find_or_create_by!(club: club1, description: "Meryl") do |court|
+  court.material = "Polvo de ladrillo"
+  court.indoor = false
+  court.price_per_hour = 15000.0
+  court.status = 0 
+end
+
+Court.find_or_create_by!(club: club1, description: "Emma") do |court|
+  court.material = "Polvo de ladrillo"
+  court.indoor = false
+  court.price_per_hour = 18000.0
+  court.status = 0
+end
+
+Court.find_or_create_by!(club: club1, description: "Cate") do |court|
+  court.material = "Cemento"
+  court.indoor = true
+  court.price_per_hour = 20000.0
+  court.status = 0
+end
+
+Court.find_or_create_by!(club: club2, description: "Natalie") do |court|
+  court.material = "Cemento"
+  court.indoor = true
+  court.price_per_hour = 14000.0
+  court.status = 0
+end
+
+Court.find_or_create_by!(club: club2, description: "Julia") do |court|
+  court.material = "Cemento"
+  court.indoor = true
+  court.price_per_hour = 17000.0
+  court.status = 0
+end
+
+Court.find_or_create_by!(club: club2, description: "Nicole") do |court|
+  court.material = "Polvo de ladrillo"
+  court.indoor = false
+  court.price_per_hour = 19000.0
+  court.status = 0
+end
+
+Court.find_or_create_by!(club: club3, description: "Audrey") do |court|
+  court.material = "Polvo de ladrillo"
+  court.indoor = false
+  court.price_per_hour = 13000.0
+  court.status = 0
+end
+
+Court.find_or_create_by!(club: club3, description: "Jodie") do |court|
+  court.material = "Polvo de ladrillo"
+  court.indoor = false
+  court.price_per_hour = 16000.0
+  court.status = 0
+end
+
+Court.find_or_create_by!(club: club3, description: "Sandra") do |court|
+  court.material = "Polvo de ladrillo"
+  court.indoor = false
+  court.price_per_hour = 14500.0
+  court.status = 0
+end
+
+[club1, club2, club3].each do |club|
+  (1..3).each do |day|
+    Schedule.find_or_create_by!(club: club, day_week: day) do |schedule|
+      schedule.start_time = "08:00:00"
+      schedule.end_time = "22:00:00"
+    end
+  end
+end
