@@ -17,7 +17,7 @@ loc1 = Location.find_or_create_by!(
   city: "Buenos Aires"
 )
 
-Club.find_or_create_by!(name: "BA Lawn Tennis") do |club|
+club1 = Club.find_or_create_by!(name: "BA Lawn Tennis") do |club|
   club.location = loc1
   club.phone = "+541147771234"
   club.description = "Sede tradicional de tenis con canchas de polvo de ladrillo."
@@ -30,10 +30,10 @@ loc2 = Location.find_or_create_by!(
   city: "Buenos Aires"
 )
 
-Club.find_or_create_by!(name: "Club Ciudad BA") do |club|
+club2 = Club.find_or_create_by!(name: "Club Ciudad BA") do |club|
   club.location = loc2
   club.phone = "+541147005678"
-  club.description = "Complejo deportivo con canchas rápidas y de césped."
+  club.description = "Complejo deportivo con canchas de cemento y polvo de ladrillo."
   club.email = "deportes@clubciudadba.com"
 end
 
@@ -43,7 +43,7 @@ loc3 = Location.find_or_create_by!(
   city: "La Plata"
 )
 
-Club.find_or_create_by!(name: "La Plata Tennis") do |club|
+club3 = Club.find_or_create_by!(name: "La Plata Tennis") do |club|
   club.location = loc3
   club.phone = "+542214229900"
   club.description = "Club histórico en el centro de La Plata."
