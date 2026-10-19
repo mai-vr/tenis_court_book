@@ -1,12 +1,14 @@
 class Api::V1::ClubsController < Api::V1::BaseController
-    def index
-        @clubs = Club.includes(:location).with_attached_logo.all
+      def index
+        @clubs = Club.includes(:location, :schedules).with_attached_logo.all
 
         clubs_json = @clubs.map do |club|
-          club.as_json(include: :location).merge(logo_url: club_logo_url(club))
+          club.as_json(include: %i[location schedules]).merge(
+            logo_url: club_logo_url(club)
+          )
         end
 
-        render json: clubs_json, include: :location, status: :ok
+        render json: clubs_json, status: :ok
       end
 
       def show
