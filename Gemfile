@@ -73,3 +73,4 @@ gem "rswag-ui"
 gem "rswag-specs"
 
 gem "rack-cors"
+gem "pg"
