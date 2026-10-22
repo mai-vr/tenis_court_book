@@ -3,7 +3,9 @@ set -e
 
 # If running the rails server then create or migrate existing database
 if [ "${@: -2:1}" == "./bin/rails" ] && [ "${@: -1:1}" == "server" ]; then
+  echo "Preparando y migrando bases de datos (incluyendo caché)..."
   ./bin/rails db:prepare
+  ./bin/rails db:migrate
 fi
 
 exec "$@"
