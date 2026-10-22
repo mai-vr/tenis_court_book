@@ -1,11 +1,24 @@
 #!/bin/bash
 set -e
 
-# If running the rails server then create or migrate existing database
+# If running the rails server then create or migrate existing database and multi-dbs (cache, queue, cable)
 if [ "${@: -2:1}" == "./bin/rails" ] && [ "${@: -1:1}" == "server" ]; then
-  echo "Preparando y migrando bases de datos (incluyendo caché)..."
+  echo "Preparando bases de datos..."
   ./bin/rails db:prepare
+  
+  echo "Migrando bases de datos múltiples (Solid Cache, etc.)..."
   ./bin/rails db:migrate
+  ./bin/rails db:migrate:primary
+  
+  if [ -d "db/cache_migrate" ]; then
+    ./bin/rails db:migrate:cache RAILS_ENV=production || true
+  fi
+  if [ -d "db/queue_migrate" ]; then
+    ./bin/rails db:migrate:queue RAILS_ENV=production || true
+  fi
+  if [ -d "db/cable_migrate" ]; then
+    ./bin/rails db:migrate:cable RAILS_ENV=production || true
+  fi
 fi
 
 exec "$@"
