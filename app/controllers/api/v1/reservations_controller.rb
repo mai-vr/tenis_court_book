@@ -37,7 +37,26 @@ class Api::V1::ReservationsController < Api::V1::BaseController
           @reservation.status = :pending
 
           if @reservation.save
-            ReservationMailer.confirmation_email(@reservation).deliver_now
+            begin
+              uri = URI.parse("https://api.brevo.com/v3/smtp/email")
+              request = Net::HTTP::Post.new(uri)
+              request["accept"] = "application/json"
+              request["api-key"] = ENV['BREVO_API_KEY']
+              request["content-type"] = "application/json"
+              request.body = {
+                sender: { email: "maitereynosov@gmail.com", name: "Tenis Court Book" },
+                to: [{ email: current_user&.email || "cliente@example.com" }],
+                subject: "¡Reserva confirmada en el club!",
+                htmlContent: "<html><body><h1>¡Hola! Tu reserva ha sido exitosa.</h1><p>Cancha: #{@reservation.court_id}</p><p>Fecha: #{@reservation.current_date}</p></body></html>"
+              }.to_json
+
+              response = Net::HTTP.start(uri.hostname, uri.port, use_ssl: true) do |http|
+                http.request(request)
+              end
+            rescue => e
+              Rails.logger.error("Error enviando correo con Brevo API: #{e.message}")
+            end
+
             render json: {
               message: "Reserva realizada con éxito.",
               reservation: @reservation.as_json(include: [ :court, :payment ])
@@ -45,12 +64,13 @@ class Api::V1::ReservationsController < Api::V1::BaseController
           else
             raise ActiveRecord::Rollback
           end
-        end
 
-        if @reservation && !@reservation.persisted?
-          render json: { errors: @reservation.errors.full_messages }, status: :unprocessable_entity
-        end
+          if @reservation && !@reservation.persisted?
+            render json: { errors: @reservation.errors.full_messages }, status: :unprocessable_entity
+          end
+        end  
       end
+        
 
       private
 
