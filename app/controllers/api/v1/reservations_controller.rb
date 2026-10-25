@@ -37,7 +37,7 @@ class Api::V1::ReservationsController < Api::V1::BaseController
           @reservation.status = :pending
 
           if @reservation.save
-            ReservationMailer.confirmation_email(@reservation).deliver_later
+            ReservationMailer.confirmation_email(@reservation).deliver_now
             render json: {
               message: "Reserva realizada con éxito.",
               reservation: @reservation.as_json(include: [ :court, :payment ])
