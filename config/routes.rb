@@ -29,7 +29,7 @@ Rails.application.routes.draw do
 
       resources :clubs, only: %i[index show] do
         resources :courts, only: %i[index show]
-        resources :reservations, only: %i[index create show]
+        resources :reservations, only: %i[index create show destroy]
       end
 
       resources :users, only: %i[create show]

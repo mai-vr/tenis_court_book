@@ -71,7 +71,19 @@ class Api::V1::ReservationsController < Api::V1::BaseController
         end  
       end
 
+      def destroy
+        reservation = current_user.reservations.find(params[:id]) # Only the user can delete their reservation.
 
+        reservation.destroy!
+
+        render json: {
+          message: "Reserva eliminada correctamente."
+        }, status: :ok
+        rescue ActiveRecord::RecordNotFound
+        render json: {
+          error: "Reserva no encontrada."
+        }, status: :not_found
+      end
 
       def my_reservations
         reservations = current_user.reservations
