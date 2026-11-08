@@ -25,6 +25,8 @@ Rails.application.routes.draw do
       resources :users, only: [ :create ]
       delete "logout", to: "sessions#destroy"
 
+      get "users/me/reservations", to: "reservations#my_reservations"
+
       resources :clubs, only: %i[index show] do
         resources :courts, only: %i[index show]
         resources :reservations, only: %i[index create show]

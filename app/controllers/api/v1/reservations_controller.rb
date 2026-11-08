@@ -1,6 +1,6 @@
 class Api::V1::ReservationsController < Api::V1::BaseController
-    before_action :set_club
     before_action :authenticate_request!
+    before_action :set_club, except: :my_reservations
 
     def index
       reservations = @club.reservations.select(
@@ -45,7 +45,7 @@ class Api::V1::ReservationsController < Api::V1::BaseController
               request["content-type"] = "application/json"
               request.body = {
                 sender: { email: "maitereynosov@gmail.com", name: "Tenis Court Book" },
-                to: [{ email: current_user&.email || "cliente@example.com" }],
+                to: [{ email: current_user&.email_address || "cliente@example.com" }],
                 subject: "¡Reserva confirmada en el club!",
                 htmlContent: "<html><body><h1>¡Hola! Tu reserva ha sido exitosa.</h1><p>Cancha: #{@reservation.court_id}</p><p>Fecha: #{@reservation.current_date}</p></body></html>"
               }.to_json
@@ -70,8 +70,67 @@ class Api::V1::ReservationsController < Api::V1::BaseController
           end
         end  
       end
-        
 
+
+
+      def my_reservations
+        reservations = current_user.reservations
+                                  .includes(court: { club: :location }, payment: nil)
+                                  .order(current_date: :desc, start_time: :desc)
+
+        render json: reservations.as_json(
+          only: %i[
+            id
+            current_date
+            start_time
+            end_time
+            status
+          ],
+          include: {
+            court: {
+              only: %i[
+                id
+                description
+                material
+                indoor
+                price_per_hour
+                status
+              ],
+              include: {
+                club: {
+                  only: %i[
+                    id
+                    name
+                    description
+                    phone
+                    email
+                  ],
+                  include: {
+                    location: {
+                      only: %i[
+                        id
+                        street
+                        number
+                        city
+                      ]
+                    }
+                  }
+                }
+              }
+            },
+            payment: {
+              only: %i[
+                id
+                payment_method
+                total
+                already_payed
+                status
+              ]
+            }
+          }
+        )
+      end
+        
       private
 
       def set_club
