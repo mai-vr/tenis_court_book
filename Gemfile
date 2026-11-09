@@ -74,3 +74,4 @@ gem "rswag-specs"
 
 gem "rack-cors"
 gem "pg"
+gem "cloudinary"
