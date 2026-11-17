@@ -24,7 +24,7 @@ class Api::V1::ReservationsController < Api::V1::BaseController
 
         ActiveRecord::Base.transaction do
           @payment = Payment.create!(
-            payment_method: params[:payment_method] || "cash",
+            payment_method: params[:payment_method],
             total: @court.price_per_hour,
             already_payed: @court.price_per_hour,
             status: :in_process
@@ -71,18 +71,49 @@ class Api::V1::ReservationsController < Api::V1::BaseController
         end  
       end
 
-      def destroy
-        reservation = current_user.reservations.find(params[:id]) # Only the user can delete their reservation.
+     def destroy
+        @reservation = @club.reservations.find_by!(
+          id: params[:id],
+          user_id: current_user.id
+        )
 
-        reservation.destroy!
+        unless @reservation.pending? || @reservation.confirmed?
+          return render json: {
+            error: "Esta reserva no se puede cancelar."
+          }, status: :unprocessable_entity
+        end
 
-        render json: {
-          message: "Reserva eliminada correctamente."
-        }, status: :ok
-        rescue ActiveRecord::RecordNotFound
-        render json: {
-          error: "Reserva no encontrada."
-        }, status: :not_found
+        reservation_date = @reservation.current_date
+        reservation_time = @reservation.start_time
+
+        reservation_start = Time.zone.local(
+          reservation_date.year,
+          reservation_date.month,
+          reservation_date.day,
+          reservation_time.hour,
+          reservation_time.min,
+          reservation_time.sec
+        )
+
+        if Time.current > reservation_start - 24.hours
+          return render json: {
+            error: "Solo podés cancelar una reserva hasta 24 horas antes de su inicio."
+          }, status: :unprocessable_entity
+        end
+
+        if @reservation.update(status: :cancelled)
+          render json: {
+            message: "Reserva cancelada correctamente.",
+            reservation: {
+              id: @reservation.id,
+              status: @reservation.status
+            }
+          }, status: :ok
+        else
+          render json: {
+            error: "No se pudo cancelar la reserva."
+          }, status: :unprocessable_entity
+        end
       end
 
       def my_reservations
@@ -141,6 +172,39 @@ class Api::V1::ReservationsController < Api::V1::BaseController
             }
           }
         )
+      end
+      def confirm
+        reservation = @club.reservations.find(params[:id])
+
+        if reservation.pending?
+          reservation.update!(status: :confirmed)
+
+          render json: {
+            message: "Reserva confirmada correctamente.",
+            reservation: reservation
+          }, status: :ok
+        else
+          render json: {
+            error: "Solo se pueden confirmar reservas pendientes."
+          }, status: :unprocessable_entity
+        end
+      end
+
+      def cancel
+        reservation = @club.reservations.find(params[:id])
+
+        if reservation.pending?
+          reservation.update!(status: :cancelled)
+
+          render json: {
+            message: "Reserva cancelada correctamente.",
+            reservation: reservation
+          }, status: :ok
+        else
+          render json: {
+            error: "Solo se pueden cancelar reservas pendientes."
+          }, status: :unprocessable_entity
+        end
       end
         
       private

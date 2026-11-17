@@ -2,6 +2,10 @@ module Admin
   class ReservationsController < ApplicationController
     before_action :set_club
 
+    def index
+      load_reservations
+    end
+
     def show
       @reservation = @club.reservations.find(params[:id])
       authorize @reservation
@@ -33,7 +37,86 @@ module Admin
           end
       end
 
+      def confirm
+        @reservation = @club.reservations.find(params[:id])
+
+        if @reservation.pending? && @reservation.current_date >= Date.current
+          if @reservation.update(status: :confirmed)
+            @message = "La reserva fue confirmada correctamente."
+            @message_type = "success"
+          else
+            @message = "No se pudo confirmar la reserva."
+            @message_type = "error"
+          end
+        else
+          @message = "No se puede confirmar esta reserva."
+          @message_type = "error"
+        end
+
+        load_reservations
+        render :index
+      end
+
+      def cancel
+        @reservation = @club.reservations.find(params[:id])
+
+        if @reservation.pending? && @reservation.current_date >= Date.current
+          if @reservation.update(status: :cancelled)
+            @message = "La reserva fue cancelada correctamente."
+            @message_type = "success"
+          else
+            @message = "No se pudo cancelar la reserva."
+            @message_type = "error"
+          end
+        else
+          @message = "No se puede cancelar esta reserva."
+          @message_type = "error"
+        end
+
+        load_reservations
+        render :index
+      end
+
+      def destroy
+        @reservation = @club.reservations.find(params[:id])
+
+        if @reservation.pending? && @reservation.current_date < Date.current
+          if @reservation.destroy
+            @message = "La reserva fue eliminada correctamente."
+            @message_type = "success"
+          else
+            @message = "No se pudo eliminar la reserva."
+            @message_type = "error"
+          end
+        else
+          @message = "Solo se pueden eliminar reservas pendientes con fecha pasada."
+          @message_type = "error"
+        end
+
+        load_reservations
+        render :index
+      end
+
     private
+
+    def load_reservations
+      reservations = @club.reservations.includes(:user, :court, :payment)
+
+      pending = reservations.where(status: :pending)
+                       .order(
+                         Arel.sql("CASE WHEN current_date >= CURRENT_DATE THEN 0 ELSE 1 END"),
+                         current_date: :asc,
+                         start_time: :asc
+                       )
+
+      @pending_reservations = pending
+
+      @confirmed_reservations = reservations.where(status: :confirmed)
+                                            .order(current_date: :desc, start_time: :asc)
+
+      @cancelled_reservations = reservations.where(status: :cancelled)
+                                            .order(current_date: :desc, start_time: :asc)
+    end
 
       def set_club
           @club = Club.find(params[:club_id])
@@ -52,6 +135,7 @@ module Admin
       schedule_exists = @club.schedules
                           .where(day_week: day_key)
                           .where("start_time <= ? AND end_time >= ?", @reservation.start_time, @reservation.end_time)
+                          .where(status: [:pending, :confirmed])
                           .exists?
       return false unless schedule_exists
 
@@ -94,6 +178,7 @@ module Admin
         @club.courts.available.reject do |court|
           court.reservations.where(current_date: @reservation.current_date)
                           .where.not(status: :cancelled)
+                          .where("current_date >= ?", Date.current)
                           .any? do |existing_res|
             exist_start = existing_res.start_time.strftime("%H:%M")
             exist_end   = existing_res.end_time.strftime("%H:%M")

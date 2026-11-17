@@ -10,10 +10,17 @@ Rails.application.routes.draw do
 
   namespace :admin do
     resources :users, only: %i[index new create]
+
     resources :clubs do
       resources :schedules, only: %i[new create]
       resources :courts
-      resources :reservations, only: %i[new create show] do
+
+      resources :reservations, only: %i[index new create show destroy] do
+        member do
+          patch :confirm
+          patch :cancel
+        end
+
         resources :payments, only: %i[new create]
       end
     end

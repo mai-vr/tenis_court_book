@@ -1,0 +1,101 @@
+<div class="admin-reservations">
+  <h1 class="admin-reservations-title">Gestión de reservas</h1>
+
+  <% if @message.present? %>
+    <div class="message <%= @message_type %>">
+      <%= @message %>
+    </div>
+  <% end %>
+
+  <section class="admin-reservations-section">
+    <h2 class="admin-reservations-heading">Reservas pendientes</h2>
+
+    <% @pending_reservations.each do |reservation| %>
+      <div class="reservation-card reservation-card--pending">
+        <p class="reservation-detail">Cliente: <%= reservation.user.email_address %></p>
+        <p class="reservation-detail">Cancha: <%= reservation.court.description %></p>
+        <p class="reservation-detail">Fecha: <%= l(reservation.current_date) %></p>
+        <p class="reservation-detail">
+          Horario:
+          <%= reservation.start_time.strftime("%H:%M") %> -
+          <%= reservation.end_time.strftime("%H:%M") %>
+        </p>
+        <p class="reservation-detail">
+          Método de pago:
+          <%= reservation.payment&.payment_method || "No especificado" %>
+        </p>
+
+        <p class="reservation-badge reservation-badge--pending">
+          Estado: Pendiente
+        </p>
+
+        <% if reservation.current_date < Date.current %>
+          <span class="status-past">Fecha pasada</span>
+            <div class="reservation-actions">
+              <%= button_to "Eliminar",
+                  admin_club_reservation_path(@club, reservation),
+                  method: :delete,
+                  class: "btn-action btn-action--cancel",
+                  data: { turbo_confirm: "¿Desea eliminar esta reserva?" } %>
+            </div>
+        <% else %>
+          <div class="reservation-actions">
+            <%= button_to "Confirmar",
+                confirm_admin_club_reservation_path(@club, reservation),
+                method: :patch,
+                class: "btn-action btn-action--confirm" %>
+
+            <%= button_to "Cancelar",
+                cancel_admin_club_reservation_path(@club, reservation),
+                method: :patch,
+                class: "btn-action btn-action--cancel" %>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+  </section>
+
+  <section class="admin-reservations-section">
+    <h2 class="admin-reservations-heading">Reservas confirmadas</h2>
+
+    <% @confirmed_reservations.each do |reservation| %>
+      <div class="reservation-card reservation-card--confirmed">
+        <p class="reservation-detail">Cliente: <%= reservation.user.email_address %></p>
+        <p class="reservation-detail">Cancha: <%= reservation.court.description %></p>
+        <p class="reservation-detail">Fecha: <%= l(reservation.current_date) %></p>
+        <p class="reservation-detail">
+          Método de pago:
+          <%= reservation.payment&.payment_method || "No especificado" %>
+        </p>
+        <p class="reservation-badge reservation-badge--confirmed">Estado: Confirmada</p>
+
+        <% if reservation.current_date < Date.current %>
+          <span class="status-past">Fecha pasada</span>
+        <% end %>
+
+      </div>
+    <% end %>
+  </section>
+
+  <section class="admin-reservations-section">
+    <h2 class="admin-reservations-heading">Reservas canceladas</h2>
+
+    <% @cancelled_reservations.each do |reservation| %>
+      <div class="reservation-card reservation-card--cancelled">
+        <p class="reservation-detail">Cliente: <%= reservation.user.email_address %></p>
+        <p class="reservation-detail">Cancha: <%= reservation.court.description %></p>
+        <p class="reservation-detail">Fecha: <%= l(reservation.current_date) %></p>
+        <p class="reservation-detail">
+          Método de pago:
+          <%= reservation.payment&.payment_method || "No especificado" %>
+        </p>
+        <p class="reservation-badge reservation-badge--cancelled">Estado: Cancelada</p>
+
+        <% if reservation.current_date < Date.current %>
+          <span class="status-past">Fecha pasada</span>
+        <% end %>
+        
+      </div>
+    <% end %>
+  </section>
+</div>

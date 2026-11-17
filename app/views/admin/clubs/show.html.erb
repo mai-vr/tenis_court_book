@@ -68,6 +68,14 @@
 
   <hr class="section-divider">
 
+  <h2 class="section-title">Gestión de reservas</h2>
+
+  <%= link_to "Ver reservas",
+      admin_club_reservations_path(@club),
+      class: "btn-add-court" %>
+
+  <hr class="section-divider">
+
   <h2 class="section-title">Reservar una cancha</h2>
   <% if @booking_slots.any? %>
     <ul class="booking-dates-list">

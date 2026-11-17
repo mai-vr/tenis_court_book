@@ -65,7 +65,9 @@
   cursor: pointer;
 }
 
-.form-reservation-submit-btn:hover { background: var(--court-dark); }
+.form-reservation-submit-btn:hover {
+  background: var(--court-dark);
+}
 
 .reservation-detail {
   display: flex;
@@ -75,9 +77,13 @@
   padding: var(--space-1) 0;
 }
 
-.reservation-detail + .reservation-detail { border-top: var(--border); }
+.reservation-detail + .reservation-detail {
+  border-top: var(--border);
+}
 
-.reservation-detail-label { color: var(--muted); }
+.reservation-detail-label {
+  color: var(--muted);
+}
 
 .reservation-status {
   padding: 0 0.75rem;
@@ -98,4 +104,144 @@
   font-weight: 700;
 }
 
-.reservation-show-section > .btn-back { margin-top: var(--space-3); }
+.reservation-show-section > .btn-back {
+  margin-top: var(--space-3);
+}
+
+/* See users reservations. */
+.admin-reservations {
+  max-width: 48rem;
+  margin: 0 auto;
+  padding: var(--space-4) var(--space-2) var(--space-5);
+}
+
+.admin-reservations-title {
+  margin-bottom: var(--space-3);
+}
+
+.admin-reservations-section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin-bottom: var(--space-4);
+}
+
+.admin-reservations-heading {
+  padding-bottom: var(--space-1);
+  border-bottom: 0.125rem solid var(--court);
+  color: var(--court);
+}
+
+.message {
+  margin-bottom: var(--space-3);
+  padding: var(--space-1) var(--space-2);
+  background: var(--paper);
+  border: var(--border);
+  border-left: 0.3rem solid var(--court);
+  border-radius: var(--radius);
+  font-weight: 600;
+}
+
+.message.success,
+.message.notice {
+  background: #f3fad3;
+  border-left-color: var(--ball);
+}
+
+.message.error,
+.message.alert,
+.message.danger {
+  background: var(--danger-bg);
+  border-left-color: var(--danger);
+  color: var(--danger);
+}
+
+.reservation-card--confirmed {
+  border-top-color: var(--ball);
+}
+.reservation-card--cancelled {
+  border-top-color: var(--danger);
+}
+
+.admin-reservations .reservation-detail {
+  justify-content: flex-start;
+  padding: 0.35rem 0;
+}
+
+.reservation-badge {
+  align-self: flex-start;
+  margin-top: var(--space-1);
+  padding: 0.15rem 0.75rem;
+  border-radius: 62rem;
+  font-size: 0.875rem;
+  font-weight: 700;
+}
+
+.reservation-badge--pending {
+  background: var(--ball);
+  color: var(--ink);
+}
+.reservation-badge--confirmed {
+  background: var(--court);
+  color: var(--paper);
+}
+.reservation-badge--cancelled {
+  background: var(--danger-bg);
+  color: var(--danger);
+}
+
+.status-past {
+  align-self: flex-start;
+  padding: 0.15rem 0.75rem;
+  background: var(--surface);
+  border: var(--border);
+  border-radius: 62rem;
+  color: var(--muted);
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.reservation-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1);
+  margin-top: var(--space-1);
+}
+
+.reservation-actions .button_to {
+  flex: 1 1 8rem;
+}
+
+.btn-action {
+  width: 100%;
+  padding: 0.6rem 1.2rem;
+  border: 0.0625rem solid transparent;
+  border-radius: var(--radius);
+  font: 600 1rem/1.2 var(--font-body);
+  cursor: pointer;
+  transition:
+    background 0.15s,
+    color 0.15s;
+}
+
+.btn-action--confirm {
+  background: var(--court);
+  color: var(--paper);
+}
+.btn-action--confirm:hover {
+  background: var(--court-dark);
+}
+
+.btn-action--cancel {
+  background: var(--paper);
+  border-color: var(--danger);
+  color: var(--danger);
+}
+.btn-action--cancel:hover {
+  background: var(--danger-bg);
+}
+
+.btn-action:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 0.1875rem rgba(23, 73, 77, 0.25);
+}

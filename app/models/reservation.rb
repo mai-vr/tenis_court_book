@@ -35,6 +35,8 @@ class Reservation < ApplicationRecord
 
     overlapping = Reservation.where(court_id: court_id, current_date: current_date)
                               .where.not(id: id)
+                              .where.not(status: :cancelled)
+                              .where("current_date >= ?", Date.current)
                               .where("start_time < ? AND end_time > ?", end_time, start_time)
 
     errors.add(:base, "The court is already booked") if overlapping.exists?
