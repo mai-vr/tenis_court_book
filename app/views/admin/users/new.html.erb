@@ -39,8 +39,14 @@
 
     <div class="form-group">
       <%= f.label :club_id, "Club", class: "form-label" %><br>
-      <%= f.text_field :club_id, required: true, class: "form-input form-input-email" %>
-    </div>
+
+      <%= f.collection_select :club_id,
+          @clubs,
+          :id,
+          :name,
+          { prompt: "Seleccionar club" },
+          { required: true, class: "form-input" } %>
+    </div>  
 
     <div class="form-actions">
       <%= f.submit "Crear Club Admin", class: "btn-submit" %>

@@ -1,0 +1,142 @@
+.auth-container {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: var(--space-5) var(--space-2);
+}
+
+.auth-card {
+  flex: 0 1 26rem;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: var(--space-4) var(--space-3);
+  background: var(--paper);
+  border: var(--border);
+  border-radius: var(--radius);
+  box-shadow: 0 0.25rem 1.5rem var(--line);
+}
+
+.auth-title {
+  color: var(--court);
+  font-size: 1.75rem;
+}
+
+.auth-subtitle {
+  color: var(--muted);
+  margin-top: calc(var(--space-1) * -0.5);
+}
+
+.auth-message {
+  padding: var(--space-1) var(--space-2);
+  border-radius: var(--radius);
+  font-size: 0.9375rem;
+  font-weight: 500;
+}
+
+.auth-message--error {
+  background: var(--danger-bg);
+  color: var(--danger);
+  border: 0.0625rem solid var(--danger);
+}
+
+.auth-message--success {
+  background: var(--surface);
+  color: var(--court);
+  border: 0.0625rem solid var(--court);
+  border-left: 0.25rem solid var(--ball);
+}
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.auth-form-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.auth-form-group label {
+  color: var(--ink);
+  font-size: 0.9375rem;
+  font-weight: 600;
+}
+
+.auth-input {
+  padding: 0.75rem var(--space-2);
+  background: var(--paper);
+  color: var(--ink);
+  border: var(--border);
+  border-radius: var(--radius);
+  font-family: var(--font-body);
+  font-size: 1rem;
+  line-height: 1.5;
+  transition:
+    border-color 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+.auth-input::placeholder {
+  color: var(--muted);
+  opacity: 1;
+}
+
+.auth-input:hover {
+  border-color: var(--muted);
+}
+
+.auth-input:focus {
+  outline: none;
+  border-color: var(--court);
+  box-shadow: 0 0 0 0.1875rem var(--ball);
+}
+
+.auth-button {
+  padding: 0.875rem var(--space-3);
+  background: var(--court);
+  color: var(--paper);
+  border: 0;
+  border-radius: var(--radius);
+  font-family: var(--font-display);
+  font-size: 1.0625rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.auth-button:hover {
+  background: var(--court-dark);
+}
+
+.auth-button:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 0.1875rem var(--ball);
+}
+
+.auth-links {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-1);
+  padding-top: var(--space-2);
+  border-top: var(--border);
+  font-size: 0.9375rem;
+}
+
+.auth-links a {
+  color: var(--court);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.auth-links a:hover {
+  color: var(--court-dark);
+  text-decoration: underline;
+}
+
+.auth-links span {
+  color: var(--muted);
+}

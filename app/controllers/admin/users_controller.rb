@@ -3,6 +3,7 @@ class Admin::UsersController < ApplicationController
 
   def new
     @user = User.new
+    @clubs = Club.order(:name) 
   end
 
   def create
@@ -12,6 +13,7 @@ class Admin::UsersController < ApplicationController
     if @user.save
       redirect_to admin_users_path
     else
+      @clubs = Club.order(:name)
       render :new, status: :unprocessable_entity
     end
   end

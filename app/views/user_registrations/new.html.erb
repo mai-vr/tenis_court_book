@@ -1,23 +1,61 @@
-<section>
-    <%= form_with model: @user do |form| %>
 
-    <%= form.label :first_name, "Name" %>
-    <%= form.text_field :first_name %>
+<div class="auth-container">
+  <div class="auth-card">
+    <h1 class="auth-title">Crear una cuenta</h1>
+    <p class="auth-subtitle">Registrate para comenzar a reservar</p>
 
-    <%= form.label :last_name, "Last name" %>
-    <%= form.text_field :last_name %>
-
-    <%= form.label :email_address, "Email" %>
-    <%= form.email_field :email_address %>
-
-    <%= form.label :password, "Password" %>
-    <%= form.password_field :password %>
-
-    <%= form.label :password_confirmation, "Confirm password" %>
-    <%= form.password_field :password_confirmation %>
-
-    <%= form.submit "Sign up" %>
-
+    <% if @user.errors.any? %>
+      <div class="auth-message auth-message--error">
+        <ul>
+          <% @user.errors.full_messages.each do |message| %>
+            <li><%= message %></li>
+          <% end %>
+        </ul>
+      </div>
     <% end %>
-</section>
 
+    <%= form_with model: @user, class: "auth-form" do |form| %>
+      <div class="auth-form-group">
+        <%= form.label :first_name, "Nombre" %>
+        <%= form.text_field :first_name,
+            class: "auth-input",
+            placeholder: "Ingresá tu nombre" %>
+      </div>
+
+      <div class="auth-form-group">
+        <%= form.label :last_name, "Apellido" %>
+        <%= form.text_field :last_name,
+            class: "auth-input",
+            placeholder: "Ingresá tu apellido" %>
+      </div>
+
+      <div class="auth-form-group">
+        <%= form.label :email_address, "Correo electrónico" %>
+        <%= form.email_field :email_address,
+            class: "auth-input",
+            placeholder: "Ingresá tu correo" %>
+      </div>
+
+      <div class="auth-form-group">
+        <%= form.label :password, "Contraseña" %>
+        <%= form.password_field :password,
+            class: "auth-input",
+            placeholder: "Ingresá tu contraseña" %>
+      </div>
+
+      <div class="auth-form-group">
+        <%= form.label :password_confirmation, "Confirmar contraseña" %>
+        <%= form.password_field :password_confirmation,
+            class: "auth-input",
+            placeholder: "Repetí tu contraseña" %>
+      </div>
+
+      <%= form.submit "Registrarme", class: "auth-button" %>
+    <% end %>
+
+    <div class="auth-links">
+      <span>¿Ya tenés una cuenta?</span>
+      <%= link_to "Iniciar sesión", new_session_path %>
+    </div>
+  </div>
+</div>
