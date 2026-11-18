@@ -1,12 +1,17 @@
 <%= turbo_stream.remove dom_id(@reservation) %>
 
-<%= turbo_stream.append "cancelled-reservations" do %>
-  <%= render "reservation", reservation: @reservation %>
+<%= turbo_stream.update "cancelled-reservations" do %>
+  <% if @cancelled_reservations.any? %>
+    <%= render partial: "reservation",
+        collection: @cancelled_reservations,
+        as: :reservation %>
+  <% else %>
+    <p class="reservations-empty">No hay reservas canceladas.</p>
+  <% end %>
 <% end %>
+
 <% if @pending_reservations.empty? %>
   <%= turbo_stream.update "pending-reservations" do %>
-    <p class="reservations-empty">
-      No hay reservas pendientes.
-    </p>
+    <p class="reservations-empty">No hay reservas pendientes.</p>
   <% end %>
 <% end %>
