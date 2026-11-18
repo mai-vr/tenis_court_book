@@ -1,0 +1,17 @@
+<% if @deleted %>
+  <%= turbo_stream.remove dom_id(@reservation) %>
+
+  <% if @pending_reservations.empty? %>
+    <%= turbo_stream.update "pending-reservations" do %>
+      <p class="reservations-empty">
+        No hay reservas pendientes.
+      </p>
+    <% end %>
+  <% end %>
+<% end %>
+
+<%= turbo_stream.update "reservation-message" do %>
+  <div class="message <%= @message_type %>">
+    <%= @message %>
+  </div>
+<% end %>

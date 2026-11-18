@@ -125,7 +125,11 @@ module Admin
         end
 
         load_reservations
-        render :index
+
+        respond_to do |format|
+          format.html { render :index }
+          format.turbo_stream { render :destroy }
+        end
       end
 
     private

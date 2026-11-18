@@ -156,6 +156,10 @@
   color: var(--danger);
 }
 
+.reservation-card {
+  margin-bottom: 0.5rem;
+}
+
 .reservation-card--confirmed {
   border-top-color: var(--ball);
 }

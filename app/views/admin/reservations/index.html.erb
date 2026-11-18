@@ -2,11 +2,13 @@
 
   <h1 class="admin-reservations-title">Gestión de reservas</h1>
 
-  <% if @message.present? %>
-    <div class="message <%= @message_type %>">
-      <%= @message %>
-    </div>
-  <% end %>
+  <div id="reservation-message">
+    <% if @message.present? %>
+      <div class="message <%= @message_type %>">
+        <%= @message %>
+      </div>
+    <% end %>
+  </div>
 
 <section class="admin-reservations-section">
   <h2 class="admin-reservations-heading">Reservas pendientes</h2>
@@ -44,7 +46,7 @@
   <h2 class="admin-reservations-heading">Reservas canceladas</h2>
 
   <div id="cancelled-reservations">
-    <% if @pending_reservations.empty? %>
+    <% if @cancelled_reservations.empty? %>
         <p class="reservations-empty">
           No hay reservas canceladas.
         </p>
