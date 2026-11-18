@@ -24,6 +24,17 @@
 
   <% if reservation.current_date < Date.current %>
     <span class="status-past">Fecha pasada</span>
+
+    <% if reservation.pending? %>
+      <div class="reservation-actions">
+        <%= button_to "Eliminar",
+            admin_club_reservation_path(@club, reservation),
+            method: :delete,
+            class: "btn-action btn-action--delete",
+            data: { turbo_confirm: "¿Estás seguro de eliminar esta reserva?" } %>
+      </div>
+    <% end %>
+
   <% elsif reservation.pending? %>
     <div class="reservation-actions">
       <%= button_to "Confirmar",
@@ -37,5 +48,6 @@
           class: "btn-action btn-action--cancel" %>
     </div>
   <% end %>
+
 
 </div>
