@@ -39,6 +39,7 @@ module Admin
 
       def confirm
         @reservation = @club.reservations.find(params[:id])
+        @update = false
 
         if @reservation.pending? && @reservation.current_date >= Date.current
           if @reservation.update(status: :confirmed)
@@ -53,17 +54,33 @@ module Admin
           @message_type = "error"
         end
 
-        load_reservations
-        render :index
+        respond_to do |format|
+          format.html do
+            load_reservations
+            render :index
+          end
+
+          format.turbo_stream do
+            if @reservation.confirmed?
+              load_reservations
+              render :confirm
+            else
+              load_reservations
+              render :index, formats: [:html]
+            end
+          end
+        end
       end
 
       def cancel
         @reservation = @club.reservations.find(params[:id])
+        @updated = false
 
         if @reservation.pending? && @reservation.current_date >= Date.current
           if @reservation.update(status: :cancelled)
             @message = "La reserva fue cancelada correctamente."
             @message_type = "success"
+            @updated = true
           else
             @message = "No se pudo cancelar la reserva."
             @message_type = "error"
@@ -73,8 +90,22 @@ module Admin
           @message_type = "error"
         end
 
-        load_reservations
-        render :index
+        respond_to do |format|
+          format.html do
+            load_reservations
+            render :index
+          end
+
+          format.turbo_stream do
+            if @updated
+              load_reservations
+              render :cancel
+            else
+              load_reservations
+              render :index, formats: [:html]
+            end
+          end
+        end
       end
 
       def destroy

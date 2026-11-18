@@ -1,0 +1,41 @@
+<div id="<%= dom_id(reservation) %>"
+     class="reservation-card reservation-card--<%= reservation.status %>">
+
+  <p class="reservation-detail">
+    Cliente: <%= reservation.user.email_address %>
+  </p>
+  <p class="reservation-detail">
+    Cancha: <%= reservation.court.description %>
+  </p>
+
+  <p class="reservation-detail">
+    Fecha: <%= l(reservation.current_date) %>
+  </p>
+
+  <p class="reservation-detail">
+    Horario:
+    <%= reservation.start_time.strftime("%H:%M") %> -
+    <%= reservation.end_time.strftime("%H:%M") %>
+  </p>
+
+  <p class="reservation-badge reservation-badge--<%= reservation.status %>">
+    Estado: <%= reservation.status.humanize %>
+  </p>
+
+  <% if reservation.current_date < Date.current %>
+    <span class="status-past">Fecha pasada</span>
+  <% elsif reservation.pending? %>
+    <div class="reservation-actions">
+      <%= button_to "Confirmar",
+          confirm_admin_club_reservation_path(@club, reservation),
+          method: :patch,
+          class: "btn-action btn-action--confirm" %>
+
+      <%= button_to "Cancelar",
+          cancel_admin_club_reservation_path(@club, reservation),
+          method: :patch,
+          class: "btn-action btn-action--cancel" %>
+    </div>
+  <% end %>
+
+</div>
